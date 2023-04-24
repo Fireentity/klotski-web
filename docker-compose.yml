@@ -1,0 +1,66 @@
+version: '3.7'
+
+services:
+  nginx:
+    image: nginx:${NGINX_VERSION_TAG}
+    restart: "no"
+    volumes:
+      - ${NGINX_CONFIG_PATH}:/etc/nginx/conf.d/${NGINX_CONFIG_PATH}
+    ports:
+      - "8000:80"
+    environment:
+      - NGINX_HOST=klotski-web.com
+      - NGINX_PORT=80
+    networks:
+      scan-eat-network:
+        ipv4_address: "${NGINX_IP_ADDRESS}"
+
+  jar:
+    image: gradle:${GRADLE_VERSION_TAG}
+    working_dir: /home/gradle/project
+    restart: "no"
+    ports:
+      - '3000:3000'
+    depends_on:
+      - database
+      - nginx
+    volumes:
+      - gradle-cache:/home/gradle/.gradle
+      - ${PROJECT_PATH}:/home/gradle/project
+    command: "gradle bootJar bootRun"
+    networks:
+      scan-eat-network:
+        ipv4_address: "${APP_IP_ADDRESS}"
+
+  database:
+    image: postgres:${POSTGRES_TAG}
+    restart: "no"
+    secrets:
+      - db-password
+    volumes:
+      - db-volume:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=lorenzo
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_PASSWORD=/run/secrets/db-password
+    ports:
+      - "5432:5432"
+    networks:
+      scan-eat-network:
+        ipv4_address: "${DATABASE_IP_ADDRESS}"
+
+volumes:
+  db-volume:
+  gradle-cache:
+
+secrets:
+  db-password:
+    file: ${DATABASE_SECRET_FILE}
+
+networks:
+  scan-eat-network:
+    name: klotski-web
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.200.0.0/24
