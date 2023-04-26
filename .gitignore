@@ -39,3 +39,5 @@ out/
 .vscode/
 
 database_secret.txt
+package-lock.json
+node_modules/

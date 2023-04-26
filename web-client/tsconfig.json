@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "sourceMap": true,
     "target": "ES2020",
     "useDefineForClassFields": true,
     "module": "ESNext",
@@ -18,8 +19,35 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+
+    "types": [
+      "@types/node",
+      "vite/client"
+    ],
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "~/*": [
+        "./resources/*"
+      ]
+    },
+    //TODO fix this output directory
+    "outDir": "./out"
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
-  "references": [{ "path": "./tsconfig.node.json"}]
+  "typeRoots": [
+    "./node_modules/@types",
+    "./src/types/shims/"
+  ],
+  "include": [
+    "./src/**/*.ts",
+    "./src/**/*.d.ts",
+    "./src/**/*.vue"
+  ],
+  "exclude": [
+    "node_modules",
+    "public"
+  ],
+  "references": [{ "path": "./tsconfig.node.json" }]
 }

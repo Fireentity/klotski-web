@@ -12,8 +12,24 @@ services:
       - NGINX_HOST=klotski-web.com
       - NGINX_PORT=80
     networks:
-      scan-eat-network:
+      klotski-web:
         ipv4_address: "${NGINX_IP_ADDRESS}"
+
+  frontend:
+    image: node:${NODE_JS_VERSION_TAG}
+    depends_on:
+      - nginx
+    working_dir: "/var/www/docker"
+    volumes:
+      - "${LOCAL_CODE_PATH}:/var/www/docker"
+    ports:
+      - "3100:3100" # vite hot reload
+    command: >
+      bash -c "npm install
+      && npm run dev"
+    networks:
+      klotski-web:
+        ipv4_address: "${NODE_JS_IP_ADDRESS}"
 
   jar:
     image: gradle:${GRADLE_VERSION_TAG}
@@ -27,9 +43,9 @@ services:
     volumes:
       - gradle-cache:/home/gradle/.gradle
       - ${PROJECT_PATH}:/home/gradle/project
-    command: "gradle bootJar bootRun"
+    command: "npm run build && gradle bootJar bootRun"
     networks:
-      scan-eat-network:
+      klotski-web:
         ipv4_address: "${APP_IP_ADDRESS}"
 
   database:
@@ -46,7 +62,7 @@ services:
     ports:
       - "5432:5432"
     networks:
-      scan-eat-network:
+      klotski-web:
         ipv4_address: "${DATABASE_IP_ADDRESS}"
 
 volumes:
@@ -58,7 +74,7 @@ secrets:
     file: ${DATABASE_SECRET_FILE}
 
 networks:
-  scan-eat-network:
+  klotski-web:
     name: klotski-web
     driver: bridge
     ipam:
