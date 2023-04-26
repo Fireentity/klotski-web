@@ -1,6 +1,11 @@
-import { createWebHistory, createRouter } from "vue-router";
+import {createWebHistory, createRouter} from "vue-router";
 
-const routes =  [
+const routes = [
+    {
+        path: '/:pathMatch(.*)*',
+        name: 'NotFound',
+        component: import("@/components/pages/NotFound.vue")
+    },
     {
         path: "/home",
         alias: "/home",
