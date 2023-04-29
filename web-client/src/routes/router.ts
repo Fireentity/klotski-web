@@ -22,11 +22,11 @@ const routes = [
                 name: "lorenzo",
                 games: [
                     {
-                        date: 5,
+                        date: "05/03/2023",
                         duration: 5
                     },
                     {
-                        date: 5,
+                        date: "07/03/2023",
                         duration: 5
                     }
                 ]
