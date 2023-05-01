@@ -1,24 +1,8 @@
 version: '3.7'
 
 services:
-  nginx:
-    image: nginx:${NGINX_VERSION_TAG}
-    restart: "no"
-    volumes:
-      - ${NGINX_CONFIG_PATH}:/etc/nginx/conf.d/${NGINX_CONFIG_PATH}
-    ports:
-      - "8000:80"
-    environment:
-      - NGINX_HOST=klotski-web.com
-      - NGINX_PORT=80
-    networks:
-      klotski-web:
-        ipv4_address: "${NGINX_IP_ADDRESS}"
-
   frontend:
     image: node:${NODE_JS_VERSION_TAG}
-    depends_on:
-      - nginx
     working_dir: "/var/www/docker"
     volumes:
       - "${LOCAL_CODE_PATH}:/var/www/docker"
@@ -34,16 +18,15 @@ services:
   jar:
     image: gradle:${GRADLE_VERSION_TAG}
     working_dir: /home/gradle/project
-    restart: "no"
+    restart: "always"
     ports:
-      - '3000:3000'
+      - '5000:8080'
     depends_on:
       - database
-      - nginx
     volumes:
       - gradle-cache:/home/gradle/.gradle
       - ${PROJECT_PATH}:/home/gradle/project
-    command: "npm run build && gradle bootJar bootRun"
+    command: "gradle game-rest-api:bootJar game-rest-api:bootRun"
     networks:
       klotski-web:
         ipv4_address: "${APP_IP_ADDRESS}"
@@ -51,14 +34,12 @@ services:
   database:
     image: postgres:${POSTGRES_TAG}
     restart: "no"
-    secrets:
-      - db-password
     volumes:
       - db-volume:/var/lib/postgresql/data
     environment:
-      - POSTGRES_USER=lorenzo
-      - POSTGRES_DB=${DATABASE_NAME}
-      - POSTGRES_PASSWORD=/run/secrets/db-password
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
     ports:
       - "5432:5432"
     networks:
@@ -68,10 +49,6 @@ services:
 volumes:
   db-volume:
   gradle-cache:
-
-secrets:
-  db-password:
-    file: ${DATABASE_SECRET_FILE}
 
 networks:
   klotski-web:
