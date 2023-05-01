@@ -1,15 +1,21 @@
 package it.klotski.web.game.domain;
 
+import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
-import java.util.List;
-
+@Setter
+@Entity
 @Getter
-@RequiredArgsConstructor
+@Table(name = "games")
 public class Game {
-    private final int id;
-    private final long duration;
-    private final long date;
-    private final List<Move> moves;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    @OneToOne
+    private User player;
+    private int startConfigurationId;
+    private long duration;
+    private long date;
+    private boolean isFinished;
 }
