@@ -1,10 +1,9 @@
 package it.klotski.web.game.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import it.klotski.web.game.domain.Game;
-import it.klotski.web.game.services.IPuzzleService;
-import lombok.RequiredArgsConstructor;
+import com.google.gson.Gson;
+import it.klotski.web.game.payload.reponses.GameResponse;
+import it.klotski.web.game.services.user.IPuzzleService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -12,27 +11,36 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "/api/games")
-@RequiredArgsConstructor
 public class GameController {
     private final IPuzzleService puzzleService;
+    private final Gson gson;
+
+    @Autowired
+    public GameController(IPuzzleService puzzleService, Gson gson) {
+        this.puzzleService = puzzleService;
+        this.gson = gson;
+    }
 
     @PostMapping
-    public ResponseEntity<String> startGame(@RequestParam(required = false) Integer startConfigId) throws JsonProcessingException {
+    public ResponseEntity<String> startGame(@RequestParam(required = false) Integer startConfigId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        ObjectMapper objectMapper = new ObjectMapper();
         if(startConfigId == null) {
-            return ResponseEntity.ok(objectMapper.writeValueAsString(puzzleService.createGameFromRandomConfiguration(authentication.getName())));
+            return ResponseEntity.ok(gson.toJson(puzzleService.createGameFromRandomConfiguration(authentication.getName())));
         }
-        return ResponseEntity.ok(objectMapper.writeValueAsString(puzzleService.createGameFromConfiguration(authentication.getName(), startConfigId)));
+        return ResponseEntity.ok(gson.toJson(puzzleService.createGameFromConfiguration(authentication.getName(), startConfigId)));
     }
 
     @GetMapping
-    public ResponseEntity<List<Game>> getGames(@RequestParam(defaultValue = "0") int page,
-                                               @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<List<GameResponse>> getGames(@RequestParam(defaultValue = "0") int page,
+                                                       @RequestParam(defaultValue = "10") int size) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return ResponseEntity.ok(puzzleService.findGamesByUser(authentication.getName(), PageRequest.of(page, size)));
+        return ResponseEntity.ok(puzzleService.findGamesByUser(authentication.getName(), PageRequest.of(page, size))
+                .stream()
+                .map(GameResponse::from)
+                .collect(Collectors.toList()));
     }
 }
