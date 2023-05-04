@@ -1,7 +1,7 @@
 package it.klotski.web.game.repositories;
 
-import it.klotski.web.game.domain.Game;
-import it.klotski.web.game.domain.Move;
+import it.klotski.web.game.domain.game.Game;
+import it.klotski.web.game.domain.move.Move;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;

@@ -1,13 +1,16 @@
-package it.klotski.web.game.domain;
+package it.klotski.web.game.domain.game;
 
+import it.klotski.web.game.domain.user.User;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+@Builder
 @Setter
 @Entity
 @Getter
 @Table(name = "games")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

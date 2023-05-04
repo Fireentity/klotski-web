@@ -1,5 +1,6 @@
-package it.klotski.web.game.domain;
+package it.klotski.web.game.domain.move;
 
+import it.klotski.web.game.domain.game.Game;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
