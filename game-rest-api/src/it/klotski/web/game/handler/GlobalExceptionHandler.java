@@ -1,5 +1,6 @@
 package it.klotski.web.game.handler;
 
+import it.klotski.web.game.exceptions.ConfigurationNotFoundException;
 import it.klotski.web.game.exceptions.UserAlreadyPresentException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,5 +19,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<?> badCredentialsException() {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body("Wrong username or password");
+    }
+
+    @ExceptionHandler(ConfigurationNotFoundException.class)
+    public ResponseEntity<?> configurationNotFoundException() {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST.value()).body("Unable to find start configuration for that id");
     }
 }
