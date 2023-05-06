@@ -1,6 +1,11 @@
 package it.klotski.web.game.payload.reponses;
 
-import java.util.List;
+import it.klotski.web.game.domain.tile.ITile;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-public record BoardResponse(List<TileResponse> tiles) {
+@Getter
+@RequiredArgsConstructor
+public class BoardResponse {
+    private final ITile[][] tiles;
 }
