@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import config from '@/config/config.ts'
+import config from '@/config/Config.ts'
 import {ChevronDownIcon, ChevronRightIcon, ChevronLeftIcon, ChevronUpIcon} from "@heroicons/vue/20/solid";
 
 const color = config.tilesColors[Math.floor(Math.random() * config.tilesColors.length)];
@@ -15,7 +15,6 @@ const color = config.tilesColors[Math.floor(Math.random() * config.tilesColors.l
             </div>
             <ChevronRightIcon class="w-7"></ChevronRightIcon>
         </div>
-
     </div>
 </template>
 
