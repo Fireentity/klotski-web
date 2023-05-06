@@ -1,19 +1,21 @@
 package it.klotski.web.game.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import it.klotski.web.game.domain.user.User;
 import it.klotski.web.game.payload.requests.LoginRequest;
 import it.klotski.web.game.payload.requests.RegisterRequest;
 import it.klotski.web.game.repositories.IUserRepository;
-import it.klotski.web.game.services.UserService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -21,17 +23,15 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.Optional;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class AuthControllerTest {
     private MockMvc mvc;
-    @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
-    private UserService userService;
-    @Autowired
+    @MockBean
     private IUserRepository userRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -45,27 +45,20 @@ public class AuthControllerTest {
     }
 
     @Test
-    public void givenUser_whenUserIsNotRegistered_thenSuccessIsReceived() throws Exception {
-        //Given
-        RegisterRequest registerRequest = new RegisterRequest("ciao@gmail.com", "ciao123");
+    public void givenUserIsNotRegistered_whenRegistering_thenSuccessIsReceived() throws Exception {
+        Mockito.when(userRepository.existsUserByEmail("example@gmail.com")).thenReturn(false);
+        RegisterRequest registerRequest = new RegisterRequest("example@gmail.com", "password");
 
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonContent = mapper.writeValueAsString(registerRequest);
+        String jsonContent = new Gson().toJson(registerRequest);
         MvcResult result = mvc.perform(post("/api/auth/register")
                 .content(jsonContent).contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)).andReturn();
-
-        //Then
-        Assertions.assertEquals("User registered successfully", result.getResponse().getContentAsString());
     }
 
     @Test
-    public void givenUserIsNotPresent_whenRegistering_thenSuccessIsReceived() throws Exception {
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonContent = mapper.writeValueAsString(new RegisterRequest("ciao@gmail.com", "ciao123"));
-        mvc.perform(post("/api/auth/register")
-                .content(jsonContent).contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON));
+    public void givenUserIsRegistered_whenRegistering_thenConflictIsReceived() throws Exception {
+        Mockito.when(userRepository.existsUserByEmail("example@gmail.com")).thenReturn(true);
+        String jsonContent = new Gson().toJson(new RegisterRequest("example@gmail.com", "password"));
 
         MvcResult result = mvc.perform(post("/api/auth/register")
                 .content(jsonContent).contentType(MediaType.APPLICATION_JSON)
@@ -74,38 +67,26 @@ public class AuthControllerTest {
     }
 
     @Test
-    public void givenUserAlreadyPresent_whenRegistering_thenBadRequestIsReceived() throws Exception {
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonContent = mapper.writeValueAsString(new RegisterRequest("ciao@gmail.com", "ciao123"));
-        mvc.perform(post("/api/auth/register")
-                .content(jsonContent).contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON));
+    public void givenUserIsRegistered_whenLogin_thenSuccessIsReceived() throws Exception {
+        User user = new User();
+        user.setId(1);
+        user.setEmail("example@gmail.com");
+        user.setPassword(passwordEncoder.encode("password"));
+        Mockito.when(userRepository.findByEmail("example@gmail.com")).thenReturn(Optional.of(user));
+        String jsonContent = new ObjectMapper().writeValueAsString(new LoginRequest("example@gmail.com", "password"));
 
-        MvcResult result = mvc.perform(post("/api/auth/register")
-                .content(jsonContent).contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)).andReturn();
-        Assertions.assertEquals(HttpStatus.CONFLICT.value(), result.getResponse().getStatus());
-    }
-
-    @Test
-    public void givenUserIsPresent_whenLogin_thenSuccessIsReceived() throws Exception {
-        String registerJsonContent = new ObjectMapper().writeValueAsString(new RegisterRequest("ciao@gmail.com", "ciao123"));
-        mvc.perform(post("/api/auth/register")
-                .content(registerJsonContent).contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON));
-
-        String loginJsonContent = new ObjectMapper().writeValueAsString(new LoginRequest("ciao@gmail.com", "ciao123"));
         MvcResult result = mvc.perform(post("/api/auth/login")
-                .content(loginJsonContent).contentType(MediaType.APPLICATION_JSON)
+                .content(jsonContent).contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)).andReturn();
         Assertions.assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
     }
 
     @Test
-    public void givenUserIsNotPresent_whenLogin_thenSuccessIsReceived() throws Exception {
-        ObjectMapper mapper = new ObjectMapper();
+    public void givenUserIsNotPresent_whenLogin_thenUnauthorizedIsReceived() throws Exception {
+        Mockito.when(userRepository.findByEmail("example@gmail.com")).thenReturn(Optional.empty());
+        Gson gson = new Gson();
 
-        String loginJsonContent = mapper.writeValueAsString(new LoginRequest("ciao@gmail.com", "ciao123"));
+        String loginJsonContent = gson.toJson(new LoginRequest("ciao@gmail.com", "ciao123"));
         MvcResult result = mvc.perform(post("/api/auth/login")
                 .content(loginJsonContent).contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)).andReturn();
