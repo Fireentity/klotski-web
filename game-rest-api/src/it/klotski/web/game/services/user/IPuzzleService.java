@@ -1,10 +1,8 @@
-package it.klotski.web.game.services;
+package it.klotski.web.game.services.user;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import it.klotski.web.game.domain.Game;
-import it.klotski.web.game.domain.Move;
+import it.klotski.web.game.domain.game.Game;
+import it.klotski.web.game.domain.move.Move;
 import it.klotski.web.game.payload.reponses.BoardResponse;
-import it.klotski.web.game.payload.requests.BoardRequest;
 import it.klotski.web.game.payload.requests.MoveRequest;
 import org.springframework.data.domain.Pageable;
 
@@ -23,7 +21,7 @@ public interface IPuzzleService {
 
     Optional<Move> findLastMove(Game game);
 
-    void createMove(MoveRequest moveRequest, BoardRequest boardRequest, Game game) throws JsonProcessingException;
+    void createMove(MoveRequest moveRequest, Game game);
 
     BoardResponse createGameFromRandomConfiguration(String email);
 
