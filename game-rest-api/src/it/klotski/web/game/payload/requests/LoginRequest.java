@@ -1,5 +1,6 @@
 package it.klotski.web.game.payload.requests;
 
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
