@@ -20,7 +20,7 @@ services:
     working_dir: /home/gradle/project
     restart: "always"
     ports:
-      - '5000:8080'
+      - '5000:8000'
     depends_on:
       - database
     volumes:
