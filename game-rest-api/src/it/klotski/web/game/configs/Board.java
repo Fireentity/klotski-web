@@ -3,14 +3,16 @@ package it.klotski.web.game.configs;
 import it.klotski.web.game.domain.tile.ITile;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.With;
 
-import java.util.List;
+import java.util.TreeSet;
 
+@With
 @Getter
 @RequiredArgsConstructor
-public class StartConfiguration {
+public class Board {
     private final int boardWidth;
     private final int boardHeight;
     private final int id;
-    private final List<ITile> tiles;
+    private final TreeSet<ITile> tiles;
 }

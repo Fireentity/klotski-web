@@ -8,5 +8,5 @@ import java.util.List;
 @Getter
 @RequiredArgsConstructor
 public class StartConfigurations {
-    private final List<StartConfiguration> configurations;
+    private final List<Board> configurations;
 }
