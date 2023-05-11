@@ -19,12 +19,12 @@ public class RectangularTileMoveValidationStrategy implements IRectangularTileSt
         int boardWidth = tiles[0].length;
         for(int i = 0; i < tile.getHeight(); i++) {
             for(int j = 0; j < tile.getWidth(); j++) {
-                if(i >= boardHeight || j >= boardWidth) {
-                    throw new IllegalStateException("Invalid configuration found, unable to generate response");
-                }
-
                 int calculatedX = tile.getX() + direction.getX() + j;
                 int calculatedY = tile.getY() + direction.getY() + i;
+                if(calculatedY >= boardHeight || calculatedX >= boardWidth) {
+                    valid = false;
+                }
+
                 ITile calculatedTile = tiles[calculatedY][calculatedX];
                 if(calculatedTile != null && !calculatedTile.equals(tile)) {
                     valid = false;
