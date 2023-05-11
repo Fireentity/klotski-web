@@ -1,24 +1,29 @@
 package it.klotski.web.game.payload.reponses;
 
+import it.klotski.web.game.configs.Board;
 import it.klotski.web.game.domain.game.Game;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
+import static it.klotski.web.game.constants.ApplicationConstants.DATE_FORMAT;
 
 @Getter
 @RequiredArgsConstructor
 public class GameResponse {
     private final long id;
     private final int startConfigurationId;
-    private final long date;
+    private final String date;
     private final long duration;
     private final boolean finished;
+    private final Board board;
 
-    public static GameResponse from(Game game) {
+    public static GameResponse from(Game game, Board tiles) {
         return new GameResponse(game.getId(),
                 game.getStartConfigurationId(),
-                game.getDate(),
+                DATE_FORMAT.format(game.getCreatedAt()),
                 game.getDuration(),
-                game.isFinished());
+                game.isFinished(),
+                tiles);
     }
 
     @Override
@@ -28,20 +33,22 @@ public class GameResponse {
 
         GameResponse that = (GameResponse) o;
 
-        if (id != that.id) return false;
-        if (startConfigurationId != that.startConfigurationId) return false;
-        if (date != that.date) return false;
-        if (duration != that.duration) return false;
-        return finished == that.finished;
+        if (getId() != that.getId()) return false;
+        if (getStartConfigurationId() != that.getStartConfigurationId()) return false;
+        if (getDuration() != that.getDuration()) return false;
+        if (isFinished() != that.isFinished()) return false;
+        if (!getDate().equals(that.getDate())) return false;
+        return getBoard().equals(that.getBoard());
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + startConfigurationId;
-        result = 31 * result + (int) (date ^ (date >>> 32));
-        result = 31 * result + (int) (duration ^ (duration >>> 32));
-        result = 31 * result + (finished ? 1 : 0);
+        int result = (int) (getId() ^ (getId() >>> 32));
+        result = 31 * result + getStartConfigurationId();
+        result = 31 * result + getDate().hashCode();
+        result = 31 * result + (int) (getDuration() ^ (getDuration() >>> 32));
+        result = 31 * result + (isFinished() ? 1 : 0);
+        result = 31 * result + getBoard().hashCode();
         return result;
     }
 }
