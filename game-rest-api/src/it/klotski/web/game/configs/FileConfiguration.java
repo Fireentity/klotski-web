@@ -1,0 +1,32 @@
+package it.klotski.web.game.configs;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.stereotype.Component;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.List;
+
+import static it.klotski.web.game.constants.ApplicationConstants.ADAPTER_FACTORY;
+import static it.klotski.web.game.constants.ApplicationConstants.START_CONFIGURATIONS_FILE_PATH;
+
+@Component
+public class FileConfiguration {
+    private final ResourceLoader resourceLoader;
+
+    public FileConfiguration(ResourceLoader resourceLoader) {
+        this.resourceLoader = resourceLoader;
+    }
+
+    @Bean
+    private List<Board> configurations() throws IOException {
+        Gson gson = new GsonBuilder().registerTypeAdapterFactory(ADAPTER_FACTORY).create();
+        File file = resourceLoader.getResource(START_CONFIGURATIONS_FILE_PATH).getFile();
+        return gson.fromJson(Files.readString(file.toPath()), new TypeToken<List<Board>>(){}.getType());
+    }
+}
