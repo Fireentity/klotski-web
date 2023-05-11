@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Repository
 public interface IMoveRepository extends PagingAndSortingRepository<Move, Long>, CrudRepository<Move, Long> {
-    List<Move> findAllByGame(Game game, Pageable pageable);
+    List<Move> findAllByGameOrderByCreatedAtAsc(Game game, Pageable pageable);
     void deleteAllByGame(Game game);
     Optional<Move> findFirstByGameOrderByCreatedAtDesc(Game game);
 }

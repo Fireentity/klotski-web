@@ -13,4 +13,5 @@ import java.util.Optional;
 public interface IGameRepository extends PagingAndSortingRepository<Game, Long>, CrudRepository<Game, Long> {
     List<Game> findAllByPlayer_Email(String email, Pageable pageable);
     Optional<Game> findGameById(long id);
+    Optional<Game> findFirstByFinishedAndPlayer_EmailOrderByCreatedAtDesc(boolean finished, String email);
 }
