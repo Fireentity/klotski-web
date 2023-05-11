@@ -3,13 +3,15 @@ package it.klotski.web.game.domain.game;
 import it.klotski.web.game.domain.user.User;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
-@Builder
+import java.sql.Date;
+
 @Setter
 @Entity
 @Getter
 @Table(name = "games")
-@AllArgsConstructor
 @NoArgsConstructor
 public class Game {
     @Id
@@ -19,6 +21,10 @@ public class Game {
     private User player;
     private int startConfigurationId;
     private long duration;
-    private long date;
-    private boolean isFinished;
+    @CreationTimestamp
+    private Date createdAt;
+    @UpdateTimestamp
+    private Date updatedAt;
+    private int moves;
+    private boolean finished;
 }
