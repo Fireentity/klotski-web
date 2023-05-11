@@ -1,46 +1,60 @@
 package it.klotski.web.game.controllers;
 
-import com.google.gson.Gson;
+import it.klotski.web.game.configs.Board;
+import it.klotski.web.game.domain.game.Game;
+import it.klotski.web.game.domain.user.User;
+import it.klotski.web.game.exceptions.GameNotFoundException;
 import it.klotski.web.game.payload.reponses.GameResponse;
+import it.klotski.web.game.payload.requests.GameRequest;
 import it.klotski.web.game.services.user.IPuzzleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/api/games")
 public class GameController {
     private final IPuzzleService puzzleService;
-    private final Gson gson;
 
     @Autowired
-    public GameController(IPuzzleService puzzleService, Gson gson) {
+    public GameController(IPuzzleService puzzleService) {
         this.puzzleService = puzzleService;
-        this.gson = gson;
     }
 
     @PostMapping
-    public ResponseEntity<String> startGame(@RequestParam(required = false) Integer startConfigId) {
+    public ResponseEntity<GameResponse> createGame(@RequestBody GameRequest gameRequest) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if(startConfigId == null) {
-            return ResponseEntity.ok(gson.toJson(puzzleService.createGameFromRandomConfiguration(authentication.getName())));
-        }
-        return ResponseEntity.ok(gson.toJson(puzzleService.createGameFromConfiguration(authentication.getName(), startConfigId)));
+        return ResponseEntity.ok(puzzleService.createGameFromConfiguration(authentication.getName(), gameRequest.getStartConfigId()));
     }
 
     @GetMapping
-    public ResponseEntity<List<GameResponse>> getGames(@RequestParam(defaultValue = "0") int page,
-                                                       @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<GameResponse> getGame(@RequestParam long gameId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return ResponseEntity.ok(puzzleService.findGamesByUser(authentication.getName(), PageRequest.of(page, size))
-                .stream()
-                .map(GameResponse::from)
-                .collect(Collectors.toList()));
+        User user = (User) authentication.getPrincipal();
+        Game game = puzzleService.findGameById(gameId).orElseThrow(GameNotFoundException::new);
+        if(game.getPlayer().getId() != user.getId()) {
+            throw new GameNotFoundException();
+        }
+
+        Board board = puzzleService.calculateCurrentConfiguration(game);
+        return ResponseEntity.ok(GameResponse.from(game, board));
+    }
+
+    @GetMapping(path = "/unfinished")
+    public ResponseEntity<GameResponse> getLastUnfinishedGame() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Optional<Game> gameOptional = puzzleService.findLastUnfinishedGame(authentication.getName());
+        if (gameOptional.isEmpty()) {
+            return ResponseEntity.ok().build();
+        }
+
+        Game game = gameOptional.get();
+        Board board = puzzleService.calculateCurrentConfiguration(game);
+
+        return ResponseEntity.ok(GameResponse.from(game, board));
     }
 }
