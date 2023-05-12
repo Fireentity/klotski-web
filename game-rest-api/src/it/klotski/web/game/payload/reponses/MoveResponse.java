@@ -4,10 +4,11 @@ import it.klotski.web.game.domain.tile.ITile;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.List;
+import java.util.TreeSet;
 
 @Getter
 @RequiredArgsConstructor
-public class BoardResponse {
-    private final List<ITile> tiles;
+public class MoveResponse {
+    private final TreeSet<ITile> tiles;
+
 }

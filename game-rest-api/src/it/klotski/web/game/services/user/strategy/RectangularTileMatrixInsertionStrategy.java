@@ -17,7 +17,7 @@ public class RectangularTileMatrixInsertionStrategy implements IRectangularTileS
                 if(i >= boardHeight || j >= boardWidth) {
                     throw new IllegalStateException("Invalid configuration found, unable to generate response");
                 }
-                tiles[i][j] = tile;
+                tiles[i+tile.getY()][j+tile.getX()] = tile;
             }
         }
     }

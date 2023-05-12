@@ -5,11 +5,13 @@ import it.klotski.web.game.domain.tile.ITile;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.TreeSet;
+
 @Getter
 @RequiredArgsConstructor
 public class MoveRequest {
-    private final ITile tile;
+    private final ITile tileToMove;
     private final Direction direction;
     private final long gameId;
-    private final BoardRequest boardRequest;
+    private final TreeSet<ITile> tiles;
 }

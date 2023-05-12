@@ -1,8 +1,10 @@
 package it.klotski.web.game.services.user;
 
+import it.klotski.web.game.configs.Board;
 import it.klotski.web.game.domain.game.Game;
 import it.klotski.web.game.domain.move.Move;
-import it.klotski.web.game.payload.reponses.BoardResponse;
+import it.klotski.web.game.domain.tile.ITile;
+import it.klotski.web.game.payload.reponses.GameResponse;
 import it.klotski.web.game.payload.requests.MoveRequest;
 import org.springframework.data.domain.Pageable;
 
@@ -13,6 +15,8 @@ public interface IPuzzleService {
 
     List<Game> findGamesByUser(String email, Pageable pageable);
 
+    Optional<Game> findLastUnfinishedGame(String email);
+
     Optional<Game> findGameById(long id);
 
     List<Move> findMovesByGame(Game game, Pageable pageable);
@@ -21,9 +25,9 @@ public interface IPuzzleService {
 
     Optional<Move> findLastMove(Game game);
 
-    void createMove(MoveRequest moveRequest, Game game);
+    void createMove(MoveRequest moveRequest, Game game, ITile[][] board, String boardHash);
 
-    BoardResponse createGameFromRandomConfiguration(String email);
+    GameResponse createGameFromConfiguration(String email, int configurationId);
 
-    BoardResponse createGameFromConfiguration(String email, int configurationId);
+    Board calculateCurrentConfiguration(Game game);
 }

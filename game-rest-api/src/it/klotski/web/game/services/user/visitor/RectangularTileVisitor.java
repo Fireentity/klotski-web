@@ -11,7 +11,7 @@ public class RectangularTileVisitor implements ITileVisitor {
     }
 
     @Override
-    public void visit(IRectangularTile tileConfig) {
+    public void visitRectangularTile(IRectangularTile tileConfig) {
         insertionStrategy.apply(tileConfig);
     }
 }

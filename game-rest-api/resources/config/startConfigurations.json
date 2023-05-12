@@ -1,99 +1,89 @@
-{
-  "configurations": [
-    {
-      "boardWidth": 4,
-      "boardHeight": 5,
-      "id": 0,
-      "tiles": [
-        {
-          "type": "rectangular",
-          "id": 0,
-          "x": 0,
-          "y": 0,
-          "width": 1,
-          "height": 2
-        },
-        {
-          "type": "rectangular",
-          "id": 1,
-          "x": 1,
-          "y": 0,
-          "width": 2,
-          "height": 2
-        },
-        {
-          "type": "rectangular",
-          "id": 2,
-          "x": 3,
-          "y": 0,
-          "width": 1,
-          "height": 2
-        },
-        {
-          "type": "rectangular",
-          "id": 3,
-          "x": 3,
-          "y": 0,
-          "width": 1,
-          "height": 2
-        },
-        {
-          "type": "rectangular",
-          "id": 4,
-          "x": 0,
-          "y": 2,
-          "width": 1,
-          "height": 2
-        },
-        {
-          "type": "rectangular",
-          "id": 5,
-          "x": 1,
-          "y": 2,
-          "width": 1,
-          "height": 1
-        },
-        {
-          "type": "rectangular",
-          "id": 6,
-          "x": 2,
-          "y": 2,
-          "width": 1,
-          "height": 1
-        },
-        {
-          "type": "rectangular",
-          "id": 7,
-          "x": 3,
-          "y": 2,
-          "width": 1,
-          "height": 2
-        },
-        {
-          "type": "rectangular",
-          "id": 8,
-          "x": 1,
-          "y": 3,
-          "width": 1,
-          "height": 1
-        },
-        {
-          "type": "rectangular",
-          "id": 9,
-          "x": 2,
-          "y": 3,
-          "width": 1,
-          "height": 1
-        },
-        {
-          "type": "rectangular",
-          "id": 10,
-          "x": 1,
-          "y": 4,
-          "width": 2,
-          "height": 1
-        }
-      ]
-    }
-  ]
-}
+[
+  {
+    "boardWidth": 4,
+    "boardHeight": 5,
+    "id": 0,
+    "tiles": [
+      {
+        "type": "rectangular",
+        "id": 0,
+        "x": 0,
+        "y": 0,
+        "width": 1,
+        "height": 2
+      },
+      {
+        "type": "winning",
+        "id": 1,
+        "x": 1,
+        "y": 0,
+        "width": 2,
+        "height": 2
+      },
+      {
+        "type": "rectangular",
+        "id": 2,
+        "x": 3,
+        "y": 0,
+        "width": 1,
+        "height": 2
+      },
+      {
+        "type": "rectangular",
+        "id": 4,
+        "x": 0,
+        "y": 2,
+        "width": 1,
+        "height": 2
+      },
+      {
+        "type": "rectangular",
+        "id": 5,
+        "x": 1,
+        "y": 2,
+        "width": 1,
+        "height": 1
+      },
+      {
+        "type": "rectangular",
+        "id": 6,
+        "x": 2,
+        "y": 2,
+        "width": 1,
+        "height": 1
+      },
+      {
+        "type": "rectangular",
+        "id": 7,
+        "x": 3,
+        "y": 2,
+        "width": 1,
+        "height": 2
+      },
+      {
+        "type": "rectangular",
+        "id": 8,
+        "x": 1,
+        "y": 3,
+        "width": 1,
+        "height": 1
+      },
+      {
+        "type": "rectangular",
+        "id": 9,
+        "x": 2,
+        "y": 3,
+        "width": 1,
+        "height": 1
+      },
+      {
+        "type": "rectangular",
+        "id": 10,
+        "x": 1,
+        "y": 4,
+        "width": 2,
+        "height": 1
+      }
+    ]
+  }
+]

@@ -1,6 +1,7 @@
 package it.klotski.web.game.handler;
 
 import it.klotski.web.game.exceptions.ConfigurationNotFoundException;
+import it.klotski.web.game.exceptions.InvalidBoardConfigurationException;
 import it.klotski.web.game.exceptions.UserAlreadyPresentException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,5 +25,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ConfigurationNotFoundException.class)
     public ResponseEntity<?> configurationNotFoundException() {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST.value()).body("Unable to find start configuration for that id");
+    }
+
+    @ExceptionHandler(InvalidBoardConfigurationException.class)
+    public ResponseEntity<?> invalidBoardConfigurationException() {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST.value()).body("Invalid board configuration");
     }
 }
