@@ -1,7 +1,11 @@
 <script setup lang="ts">
-import {defineComponent, h} from 'vue'
 import {ChevronRightIcon, StarIcon} from '@heroicons/vue/20/solid'
-import FooterNavigation from "@/types/models/FooterNavigation";
+
+interface FooterElement {
+    name: string,
+    href: string,
+    icon?: string
+}
 
 const stats = [
     {label: 'Founded', value: '2021'},
@@ -17,7 +21,10 @@ const logos = [
     {name: 'StaticKit', url: 'https://tailwindui.com/img/logos/statickit-logo-gray-400.svg'},
     {name: 'Workcation', url: 'https://tailwindui.com/img/logos/workcation-logo-gray-400.svg'},
 ]
-const footerNavigation: FooterNavigation = {
+const footerNavigation: {
+    main: FooterElement[]
+    social: FooterElement[]
+} = {
     main: [],
     social: []
 }
