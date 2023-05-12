@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import LoginRequest from "@/types/models/LoginRequest.ts";
+import LoginRequest from "@/types/requests/LoginRequest.ts";
 import {useStore} from 'vuex';
 import InputLabel from "@/components/InputLabel.vue";
 import TextInput from "@/components/TextInput.vue";
@@ -29,6 +29,7 @@ const form: UnwrapNestedRefs<Form> = reactive({
     })
 })
 
+//TODO fix registration
 const register = (request: LoginRequest) => store.dispatch('register', {
     form: request,
     then: () => {
@@ -36,6 +37,8 @@ const register = (request: LoginRequest) => store.dispatch('register', {
     },
     catch: (reason) => {
         if(reason.response.status == 409) {
+
+            //TODO tradurre in italiano
             form.errors.password_confirmation = "Email already registered"
         }
     }
@@ -44,9 +47,10 @@ const register = (request: LoginRequest) => store.dispatch('register', {
 
 const submit = () => {
     if (form.password !== form.password_confirmation) {
-        form.errors.password_confirmation = "Passwords do not match"
+        form.errors.password_confirmation = "Le password non coincidono"
         return
     }
+    //TODO insert constructor here
     register({
         email: form.email,
         password: form.password

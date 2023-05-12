@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import LoginRequest from "@/types/models/LoginRequest.ts";
+import LoginRequest from "@/types/requests/LoginRequest.ts";
 import {useStore} from 'vuex';
-import User from "@/types/models/User.ts";
 import router from "@/routes/Router.ts";
 import {reactive, UnwrapNestedRefs} from "vue";
 import TextInput from "@/components/TextInput.vue";
@@ -25,12 +24,11 @@ const form: UnwrapNestedRefs<Form> = reactive({
 const login = (request: LoginRequest) => store.dispatch('login', {
     form: request,
     then: () => {
-        console.log("redirect to game")
         router.push({path: "/game"})
     },
     catch: (reason) => {
         if (reason.response.status == 401) {
-            form.error = "Wrong username or password"
+            form.error = "Username o password errati"
         }
     }
 })
@@ -95,9 +93,8 @@ const submit = () => {
             </form>
 
             <p class="mt-10 text-center text-sm text-gray-500">
-                Not a member?
-                <a href="#" class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Start a 14 day free
-                    trial</a>
+                Non hai un account?
+                <a href="/register" class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Registrati</a>
             </p>
         </div>
     </div>
