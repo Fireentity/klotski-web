@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import Game from "@/types/models/Game.ts";
 import {PlayIcon} from "@heroicons/vue/20/solid";
+import GameInfo from "@/types/models/GameInfo.ts";
 
 const props = defineProps<{
-    game: Game
+    game: GameInfo
     isLast: boolean
 }>();
 </script>
