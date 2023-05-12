@@ -1,7 +1,4 @@
-import {createWebHistory, createRouter, RouteLocationNormalized} from "vue-router";
-import Config from "@/config/Config.ts";
-import store from "@/store/Store.ts"
-
+import {createWebHistory, createRouter} from "vue-router";
 const routes = [
     {
         path: '/:pathMatch(.*)*',
@@ -19,21 +16,6 @@ const routes = [
         alias: "/game",
         name: "game",
         component: () => import("@/components/pages/Game.vue"),
-        props: {
-            user: {
-                name: "lorenzo",
-                games: [
-                    {
-                        date: "05/03/2023",
-                        duration: 5
-                    },
-                    {
-                        date: "07/03/2023",
-                        duration: 5
-                    }
-                ]
-            }
-        }
     },
     {
         path: "/login",
@@ -54,10 +36,4 @@ const router = createRouter({
     routes
 });
 
-router.beforeEach( (to: RouteLocationNormalized) => {
-    if(!Config.publicPages.includes(to.path) && store.getters['isAuthenticated'] === false) {
-        return '/login'
-    }
-})
-
-export default router;
+export default router
