@@ -23,11 +23,13 @@ public class RectangularTileMoveValidationStrategy implements IRectangularTileSt
                 int calculatedY = tile.getY() + direction.getY() + i;
                 if(calculatedY >= boardHeight || calculatedX >= boardWidth) {
                     valid = false;
+                    return;
                 }
 
                 ITile calculatedTile = tiles[calculatedY][calculatedX];
                 if(calculatedTile != null && !calculatedTile.equals(tile)) {
                     valid = false;
+                    return;
                 }
             }
         }
