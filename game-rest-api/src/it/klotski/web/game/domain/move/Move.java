@@ -9,6 +9,10 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
 
+/**
+ * Classe che rappresenta l'oggetto "mossa", costituito da: id, partita di appartenenza, tile di appartenenza, direzione
+ * di movimento, configurazione di appartenenza, data di creazione, data di aggiornamento.
+ */
 @Setter
 @Getter
 @Entity
