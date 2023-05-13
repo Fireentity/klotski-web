@@ -4,7 +4,7 @@ import it.klotski.web.game.domain.tile.IRectangularTile;
 import it.klotski.web.game.domain.tile.ITile;
 import lombok.RequiredArgsConstructor;
 /**
- * Classe che gestisce la logica d'inserimento dei tiles di forma rettangolare all'interno della griglia
+ * Classe che gestisce la logica d'inserimento dei tiles di forma rettangolare all'interno della griglia.
  */
 @RequiredArgsConstructor
 public class RectangularTileMatrixInsertionStrategy implements IRectangularTileStrategy {
@@ -13,8 +13,8 @@ public class RectangularTileMatrixInsertionStrategy implements IRectangularTileS
     private final int boardWidth;
 
     /**
-     * Funzione per inserire il tile nella griglia
-     * @param tile il pezzo da inserire
+     * Funzione per inserire il tile nella griglia.
+     * @param tile il pezzo da inserire.
      * @throws IllegalStateException se il tile non può essere inserito nella griglia perché uscirebbe da essa.
      */
     @Override

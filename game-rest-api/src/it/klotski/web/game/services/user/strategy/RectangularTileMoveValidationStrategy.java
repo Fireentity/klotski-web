@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
- * Classe che gestisce la logica di movimento dei tiles di forma rettangolare all'interno della griglia
+ * Classe che gestisce la logica di movimento dei tiles di forma rettangolare all'interno della griglia.
  */
 @RequiredArgsConstructor
 public class RectangularTileMoveValidationStrategy implements IRectangularTileStrategy {
@@ -17,8 +17,8 @@ public class RectangularTileMoveValidationStrategy implements IRectangularTileSt
     private boolean valid = true;
 
     /**
-     * Funzione che verifica se il movimento di un tile è valido (non esce dalla griglia e non incrocia altri tiles)
-     * @param tile il pezzo da inserire
+     * Funzione che verifica se il movimento di un tile è valido (non esce dalla griglia e non incrocia altri tiles).
+     * @param tile il pezzo da inserire.
      */
 
     @Override
