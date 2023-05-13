@@ -8,6 +8,10 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Date;
 
+/**
+ * Classe che rappresenta l'oggetto "partita", costituito da: id, user, configurazione iniziale, data di creazione, data
+ * di aggiornamento, numero di mosse, stato (finita o in corso).
+ */
 @Setter
 @Entity
 @Getter
