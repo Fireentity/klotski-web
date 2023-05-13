@@ -7,6 +7,9 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.TreeSet;
 
+/**
+ * Classe per la gestione delle richieste di movimento di un tile all'interno della griglia.
+ */
 @Getter
 @RequiredArgsConstructor
 public class MoveRequest {
