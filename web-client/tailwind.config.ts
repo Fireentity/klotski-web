@@ -27,7 +27,12 @@ module.exports = {
         extend: {
             colors: {
                 tile_orange: '#FFDBA4',
-                tile_red: '#FD8A8A'
+                tile_red: '#FD8A8A',
+                primary: {
+                    '300': '#CBDBF6',
+                    '600': '#387BC9',
+                    '900': '#1D3464',
+                },
             },
             aspectRatio: {
                 '4/5': '4 / 5',
