@@ -24,12 +24,20 @@ import java.util.List;
 
 import static it.klotski.web.game.constants.ApplicationConstants.ADAPTER_FACTORY;
 
+/**
+ * Questa classe rappresenta la configurazione del Web per l'applicazione.
+ */
 @Configuration
 @EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
     private static final Long MAX_AGE = 3600L;
     private static final int CORS_FILTER_ORDER = -102;
 
+    /**
+     * Estende la lista dei convertitori di messaggi HTTP per includere il convertitore Gson.
+     *
+     * @param converters La lista dei convertitori di messaggi HTTP.
+     */
     @Override
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
         GsonBuilder gsonBuilder = new GsonBuilder();
@@ -39,6 +47,11 @@ public class WebConfig implements WebMvcConfigurer {
         gsonHttpMessageConverter.setSupportedMediaTypes(List.of(MediaType.APPLICATION_JSON));
     }
 
+    /**
+     * Restituisce l'istanza di Gson utilizzata per la conversione dei messaggi HTTP.
+     *
+     * @return L'istanza di Gson.
+     */
     @Bean
     public Gson gson() {
         GsonBuilder b = new GsonBuilder();
@@ -46,6 +59,11 @@ public class WebConfig implements WebMvcConfigurer {
         return b.create();
     }
 
+    /**
+     * Configura i convertitori di messaggi HTTP per supportare vari tipi di dati.
+     *
+     * @param converters La lista dei convertitori di messaggi HTTP.
+     */
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         StringHttpMessageConverter stringConverter = new StringHttpMessageConverter();
@@ -60,6 +78,12 @@ public class WebConfig implements WebMvcConfigurer {
         converters.add(gsonHttpMessageConverter);
     }
 
+    /**
+     * Crea e registra un filtro CORS per consentire le richieste cross-origin.
+     *Il filtro CORS determina quali domini sono consentiti ad accedere alle risorse del server attraverso le
+     * richieste HTTP
+     * @return Il bean di registrazione del filtro CORS.
+     */
     @Bean
     public FilterRegistrationBean<CorsFilter> corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -84,7 +108,5 @@ public class WebConfig implements WebMvcConfigurer {
         config.setMaxAge(MAX_AGE);
         bean.setOrder(CORS_FILTER_ORDER);
         return bean;
-
     }
-
 }
