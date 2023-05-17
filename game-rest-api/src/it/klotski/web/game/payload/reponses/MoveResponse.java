@@ -8,7 +8,16 @@ import java.util.TreeSet;
 
 @Getter
 @RequiredArgsConstructor
-public class MoveResponse {
-    private final TreeSet<ITile> tiles;
 
+/**
+ * Questa classe rappresenta la risposta di un'operazione di spostamento.
+ *
+ * La classe MoveResponse contiene un insieme di tessere (tiles) che rappresentano
+ * lo stato aggiornato dopo un'operazione di spostamento.
+ */
+public class MoveResponse {
+    /**
+     * L'insieme di tessere che rappresentano lo stato aggiornato dopo un'operazione di spostamento.
+     */
+    private final TreeSet<ITile> tiles;
 }
