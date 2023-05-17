@@ -15,14 +15,31 @@ import java.util.List;
 import static it.klotski.web.game.constants.ApplicationConstants.ADAPTER_FACTORY;
 import static it.klotski.web.game.constants.ApplicationConstants.START_CONFIGURATIONS_FILE_PATH;
 
+/**
+ * Configurazione per la lettura dei dati di configurazione da un file.
+ */
 @Component
 public class FileConfiguration {
+    /**
+     * Caricatore di risorse utilizzato per ottenere il percorso del file di configurazione.
+     */
     private final ResourceLoader resourceLoader;
 
+    /**
+     * Costruttore della classe FileConfiguration.
+     *
+     * @param resourceLoader Il caricatore di risorse utilizzato per ottenere il percorso del file di configurazione.
+     */
     public FileConfiguration(ResourceLoader resourceLoader) {
         this.resourceLoader = resourceLoader;
     }
 
+    /**
+     * Metodo che restituisce una lista di configurazioni di tabelloni lette da un file.
+     *
+     * @return La lista di configurazioni di tabelloni.
+     * @throws IOException Se si verifica un errore durante la lettura del file.
+     */
     @Bean
     private List<Board> configurations() throws IOException {
         Gson gson = new GsonBuilder().registerTypeAdapterFactory(ADAPTER_FACTORY).create();
