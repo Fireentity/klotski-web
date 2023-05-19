@@ -1,7 +1,7 @@
 package it.klotski.web.game.domain.move;
 
-import it.klotski.web.game.domain.game.Game;
-import jakarta.persistence.*;
+
+import it.klotski.web.game.domain.domain.game.Game;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
