@@ -16,10 +16,10 @@ import static it.klotski.web.game.constants.ApplicationConstants.ADAPTER_FACTORY
 import static it.klotski.web.game.constants.ApplicationConstants.START_CONFIGURATIONS_FILE_PATH;
 
 @Component
-public class FileConfiguration {
+public class FileConfigurationLoader {
     private final ResourceLoader resourceLoader;
 
-    public FileConfiguration(ResourceLoader resourceLoader) {
+    public FileConfigurationLoader(ResourceLoader resourceLoader) {
         this.resourceLoader = resourceLoader;
     }
 
