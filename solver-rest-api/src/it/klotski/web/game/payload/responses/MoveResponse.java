@@ -11,7 +11,8 @@ import lombok.RequiredArgsConstructor;
 public class MoveResponse {
     private final int tileId;
     private final Direction direction;
-    public static MoveResponse from(ITile tile, Movement movement){
-        return new MoveResponse(tile.getId(),movement.getDirection());
+
+    public static MoveResponse from(ITile tile, Movement movement) {
+        return new MoveResponse(tile.getId(), movement.getDirection());
     }
 }
