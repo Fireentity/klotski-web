@@ -132,6 +132,12 @@ const main = {
                 getters['getCurrentGame'].board.tiles = response.data.tiles;
             })
         },
+        async isAuthenticated({commit}, then ){
+            return axios.get('/auth/is-authenticated').then((response)=> {
+                then();
+            } )
+
+        },
         // @ts-ignore
         async csrf({commit}) {
             localStorage.removeItem('X-XSRF-TOKEN')

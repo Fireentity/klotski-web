@@ -123,8 +123,10 @@ const config = {
         id: fallbackStartConfiguration.id,
         tiles: tiles
     },
-    typeAdapterFactory: typeAdapterFactory
-
+    typeAdapterFactory: typeAdapterFactory,
+    navElements: [
+        {name: 'home'}, {name: 'rules'}, {name: 'play'}
+    ]
 }
 
 export default config

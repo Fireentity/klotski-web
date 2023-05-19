@@ -3,9 +3,22 @@ import {Disclosure, DisclosureButton, DisclosurePanel} from '@headlessui/vue'
 import {Bars3Icon, BellIcon, XMarkIcon} from '@heroicons/vue/24/outline'
 import {PuzzlePieceIcon} from '@heroicons/vue/24/solid'
 import {useStore} from "vuex";
+import Config from "@/config/Config.ts";
+import {reactive, ref} from "vue";
+
 
 const store = useStore()
 const logout = () => store.dispatch('logout')
+
+const navElements=Config.navElements
+
+let isAuthenticated = ref(false);
+
+store.dispatch('isAuthenticated', ()=>{
+    Object.assign(isAuthenticated, true);
+}) ;
+
+
 
 </script>
 
@@ -30,7 +43,8 @@ const logout = () => store.dispatch('logout')
                     <div class="hidden md:ml-6 md:flex md:space-x-8">
                         <!-- Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" -->
                         <a href="#"
-                           class="inline-flex items-center border-b-2 border-indigo-500 px-1 pt-1 text-sm font-medium text-gray-900">Dashboard</a>
+                           v-for="element in navElements"
+                           class="inline-flex items-center border-b-2 border-indigo-500 px-1 pt-1 text-sm font-medium text-gray-900">{{element.name}}</a>
                         <a href="#"
                            class="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">Team</a>
                         <a href="#"
@@ -39,7 +53,7 @@ const logout = () => store.dispatch('logout')
                            class="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">Calendar</a>
                     </div>
                 </div>
-                <div class="flex items-center">
+                <div v-if="isAuthenticated" class="flex items-center">
                     <div class="hidden md:ml-4 md:flex md:flex-shrink-0 md:items-center">
                         <div class="relative ml-3">
                             <a @click="logout" class="cursor-pointer font-medium text-gray-900">Esci</a>
