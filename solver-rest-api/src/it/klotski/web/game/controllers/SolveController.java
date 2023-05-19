@@ -2,12 +2,12 @@ package it.klotski.web.game.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import it.klotski.web.game.config.FileConfigurationLoader;
-import it.klotski.web.game.domain.move.Move;
 import it.klotski.web.game.exceptions.SolutionNotFoundException;
 import it.klotski.web.game.payload.requests.SolveRequest;
 import it.klotski.web.game.payload.responses.MoveResponse;
+import it.klotski.web.game.tile.ITile;
 import it.klotski.web.game.utils.ExcludeFieldExclusionStrategy;
+import it.klotski.web.game.utils.Movement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,10 +21,10 @@ import java.util.HashMap;
 @RequestMapping(path = "/api/solver")
 public class SolveController {
 
-    private final HashMap<String, MoveResponse> solutions;
+    private final HashMap<String, Movement> solutions;
 
     @Autowired
-    public SolveController(HashMap<String, MoveResponse> solutions) {
+    public SolveController(HashMap<String, Movement> solutions) {
         this.solutions = solutions;
     }
 
@@ -36,11 +36,17 @@ public class SolveController {
                 .setExclusionStrategies(new ExcludeFieldExclusionStrategy(fieldNameToExclude))
                 .create();
         String boardHash = DigestUtils.md5DigestAsHex(gson.toJson(solveRequest.getTiles()).getBytes(StandardCharsets.UTF_8));
-        MoveResponse moveResponse = solutions.get(boardHash);
-        if (moveResponse == null) {
+        Movement movement = solutions.get(boardHash);
+        if (movement == null) {
             throw new SolutionNotFoundException();
         }
-        return moveResponse;
+        for (ITile tile : solveRequest.getTiles()) {
+            //TODO come avere la posizione dei tile
+            if (movement.getX() == tile && movement.getY() == tile) {
+                return MoveResponse.from(tile, movement);
+            }
+        }
+        throw new IllegalStateException(String.format("Unable to find tile with x:%d y:%d", movement.getX(), movement.getY()));
     }
 
 
