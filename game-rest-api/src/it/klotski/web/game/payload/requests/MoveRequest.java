@@ -1,7 +1,7 @@
 package it.klotski.web.game.payload.requests;
 
-import it.klotski.web.game.domain.move.Direction;
-import it.klotski.web.game.domain.tile.ITile;
+import it.klotski.web.game.move.Direction;
+import it.klotski.web.game.tile.ITile;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

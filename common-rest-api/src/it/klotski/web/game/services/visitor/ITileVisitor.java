@@ -1,7 +1,7 @@
-package it.klotski.web.game.services.user.visitor;
+package it.klotski.web.game.services.visitor;
 
-import it.klotski.web.game.domain.tile.IRectangularTile;
-import it.klotski.web.game.domain.tile.IWinningTile;
+import it.klotski.web.game.tile.IRectangularTile;
+import it.klotski.web.game.tile.IWinningTile;
 
 public interface ITileVisitor {
     default void visitRectangularTile(IRectangularTile tileConfig) {

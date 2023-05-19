@@ -1,7 +1,7 @@
 package it.klotski.web.game.services.user.strategy;
 
-import it.klotski.web.game.domain.tile.IRectangularTile;
-import it.klotski.web.game.domain.tile.ITile;
+import it.klotski.web.game.tile.IRectangularTile;
+import it.klotski.web.game.tile.ITile;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

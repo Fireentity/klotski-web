@@ -1,6 +1,7 @@
 package it.klotski.web.game.configs;
 
-import it.klotski.web.game.domain.tile.ITile;
+
+import it.klotski.web.game.tile.ITile;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.With;
