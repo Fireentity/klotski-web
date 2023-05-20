@@ -38,54 +38,19 @@ const footerNavigation: {
             <div class="overflow-hidden pt-8 sm:pt-12 lg:relative lg:py-48">
                 <div class="mx-auto max-w-md px-6 sm:max-w-3xl lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-24 lg:px-8">
                     <div>
-                        <div>
-                            <img class="h-11 w-auto"
-                                 src="https://tailwindui.com/img/logos/mark.svg?color=rose&shade=500"
-                                 alt="Your Company"/>
-                        </div>
                         <div class="mt-20">
-                            <div>
-                                <a href="#" class="inline-flex space-x-4">
-                                    <span class="rounded bg-rose-50 px-2.5 py-1 text-sm font-semibold text-rose-500">What's new</span>
-                                    <span class="inline-flex items-center space-x-1 text-sm font-medium text-rose-500">
-                    <span>Just shipped v0.1.0</span>
-                    <ChevronRightIcon class="h-5 w-5" aria-hidden="true"/>
-                  </span>
-                                </a>
-                            </div>
                             <div class="mt-6 sm:max-w-xl">
-                                <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">TestaaaPPPP</h1>
-                                <p class="mt-6 text-xl text-gray-500">Anim aute id magna aliqua ad ad non deserunt sunt.
-                                    Qui irure qui lorem cupidatat commodo.</p>
+                                <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">Klotski</h1>
+                                <p class="mt-6 text-xl text-gray-500">Sito web in cui potrete divertirvi con il famoso puzzle Klotski e sfidare i vostri amici</p>
                             </div>
                             <form action="#" class="mt-12 sm:flex sm:w-full sm:max-w-lg">
-                                <div class="min-w-0 flex-1">
-                                    <label for="hero-email" class="sr-only">Email address</label>
-                                    <input id="hero-email" type="email"
-                                           class="block w-full rounded-md border border-gray-300 px-5 py-3 text-base text-gray-900 placeholder-gray-500 shadow-sm focus:border-rose-500 focus:ring-rose-500"
-                                           placeholder="Enter your email"/>
-                                </div>
                                 <div class="mt-4 sm:mt-0 sm:ml-3">
                                     <button type="submit"
-                                            class="block w-full rounded-md border border-transparent bg-rose-500 px-5 py-3 text-base font-medium text-white shadow hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 sm:px-10">
-                                        Notify me
+                                            class="block w-full rounded-md border border-transparent bg-primary-600 px-5 py-3 text-base font-medium text-white shadow hover:bg-primary-900 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 sm:px-10">
+                                        Gioca ora
                                     </button>
                                 </div>
                             </form>
-                            <div class="mt-6">
-                                <div class="inline-flex items-center divide-x divide-gray-300">
-                                    <div class="flex flex-shrink-0 pr-5">
-                                        <StarIcon class="h-5 w-5 text-yellow-400" aria-hidden="true"/>
-                                        <StarIcon class="h-5 w-5 text-yellow-400" aria-hidden="true"/>
-                                        <StarIcon class="h-5 w-5 text-yellow-400" aria-hidden="true"/>
-                                        <StarIcon class="h-5 w-5 text-yellow-400" aria-hidden="true"/>
-                                        <StarIcon class="h-5 w-5 text-yellow-400" aria-hidden="true"/>
-                                    </div>
-                                    <div class="min-w-0 flex-1 py-1 pl-5 text-sm text-gray-500 sm:py-3"><span
-                                            class="font-medium text-gray-900">Rated 5 stars</span> by over <span
-                                            class="font-medium text-rose-500">500 beta users</span></div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -170,120 +135,21 @@ const footerNavigation: {
                     <div class="relative mx-auto max-w-md px-6 sm:max-w-3xl lg:px-0">
                         <!-- Content area -->
                         <div class="pt-12 sm:pt-16 lg:pt-20">
-                            <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">On a mission to
-                                empower teams</h2>
+                            <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Di cosa si tratta</h2>
                             <div class="mt-6 space-y-6 text-gray-500">
-                                <p class="text-lg">Sagittis scelerisque nulla cursus in enim consectetur quam. Dictum
-                                    urna sed consectetur neque tristique pellentesque. Blandit amet, sed aenean erat
-                                    arcu morbi. Cursus faucibus nunc nisl netus morbi vel porttitor vitae ut. Amet vitae
-                                    fames senectus vitae.</p>
-                                <p class="text-base leading-7">Sollicitudin tristique eros erat odio sed vitae,
-                                    consequat turpis elementum. Lorem nibh vel, eget pretium arcu vitae. Eros eu viverra
-                                    donec ut volutpat donec laoreet quam urna. Sollicitudin tristique eros erat odio sed
-                                    vitae, consequat turpis elementum. Lorem nibh vel, eget pretium arcu vitae. Eros eu
-                                    viverra donec ut volutpat donec laoreet quam urna.</p>
-                                <p class="text-base leading-7">Rhoncus nisl, libero egestas diam fermentum dui. At quis
-                                    tincidunt vel ultricies. Vulputate aliquet velit faucibus semper. Pellentesque in
-                                    venenatis vestibulum consectetur nibh id. In id ut tempus egestas. Enim sit aliquam
-                                    nec, a. Morbi enim fermentum lacus in. Viverra.</p>
+                                <p class="text-lg">Klotski è costituito da una griglia  di dimensioni
+                                    5x4 dove alcune caselle sono occupate da blocchi di forme e dimensioni diverse. Questi possono essere spostati in
+                                    verticale o in orizzontale, ma non sollevati. L'obiettivo è spostare i blocchi in modo da
+                                    liberare quello rosso portandolo alla fine del tabellone. Il gioco è un ottimo modo per
+                                    esercitare la logica e la risoluzione dei problemi, poiché richiede la pianificazione strategica dei movimenti
+                                    per raggiungere l'obiettivo finale.</p>
                             </div>
                         </div>
 
-                        <!-- Stats section -->
-                        <div class="mt-10">
-                            <dl class="grid grid-cols-2 gap-x-4 gap-y-8">
-                                <div v-for="stat in stats" :key="stat.label" class="border-t-2 border-gray-100 pt-6">
-                                    <dt class="text-base font-medium text-gray-500">{{ stat.label }}</dt>
-                                    <dd class="text-3xl font-bold tracking-tight text-gray-900">{{ stat.value }}</dd>
-                                </div>
-                            </dl>
-                            <div class="mt-10">
-                                <a href="#" class="text-base font-medium text-rose-500">Learn more about how we're
-                                    changing the world &rarr;</a>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Logo cloud section -->
-            <div class="mt-32">
-                <div class="mx-auto max-w-md px-6 sm:max-w-3xl lg:max-w-7xl lg:px-8">
-                    <div class="lg:grid lg:grid-cols-2 lg:items-center lg:gap-24">
-                        <div>
-                            <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Backed by
-                                world-renowned investors</h2>
-                            <p class="mt-6 max-w-3xl text-lg leading-7 text-gray-500">Sagittis scelerisque nulla cursus
-                                in enim consectetur quam. Dictum urna sed consectetur neque tristique pellentesque.
-                                Blandit amet, sed aenean erat arcu morbi. Cursus faucibus nunc nisl netus morbi vel
-                                porttitor vitae ut. Amet vitae fames senectus vitae.</p>
-                            <div class="mt-6">
-                                <a href="#" class="text-base font-medium text-rose-500">Meet our investors and advisors
-                                    &rarr;</a>
-                            </div>
-                        </div>
-                        <div class="mt-12 grid grid-cols-2 gap-0.5 md:grid-cols-3 lg:mt-0 lg:grid-cols-2">
-                            <div v-for="logo in logos" :key="logo.name"
-                                 class="col-span-1 flex justify-center bg-gray-50 py-8 px-8">
-                                <img class="max-h-12" :src="logo.url" :alt="logo.name"/>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- CTA section -->
-            <div class="relative mt-24 sm:mt-32 sm:py-16">
-                <div aria-hidden="true" class="hidden sm:block">
-                    <div class="absolute inset-y-0 left-0 w-1/2 rounded-r-3xl bg-gray-50"/>
-                    <svg class="absolute top-8 left-1/2 -ml-3" width="404" height="392" fill="none"
-                         viewBox="0 0 404 392">
-                        <defs>
-                            <pattern id="8228f071-bcee-4ec8-905a-2a059a2cc4fb" x="0" y="0" width="20" height="20"
-                                     patternUnits="userSpaceOnUse">
-                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor"/>
-                            </pattern>
-                        </defs>
-                        <rect width="404" height="392" fill="url(#8228f071-bcee-4ec8-905a-2a059a2cc4fb)"/>
-                    </svg>
-                </div>
-                <div class="mx-auto max-w-md px-6 sm:max-w-3xl lg:max-w-7xl lg:px-8">
-                    <div class="relative overflow-hidden rounded-2xl bg-rose-500 px-6 py-10 shadow-xl sm:px-12 sm:py-20">
-                        <div aria-hidden="true" class="absolute inset-0 -mt-72 sm:-mt-32 md:mt-0">
-                            <svg class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid slice"
-                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 1463 360">
-                                <path class="text-rose-400 text-opacity-40" fill="currentColor"
-                                      d="M-82.673 72l1761.849 472.086-134.327 501.315-1761.85-472.086z"/>
-                                <path class="text-rose-600 text-opacity-40" fill="currentColor"
-                                      d="M-217.088 544.086L1544.761 72l134.327 501.316-1761.849 472.086z"/>
-                            </svg>
-                        </div>
-                        <div class="relative">
-                            <div class="sm:text-center">
-                                <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">Get notified when
-                                    we&rsquo;re launching.</h2>
-                                <p class="mx-auto mt-6 max-w-2xl text-lg text-rose-100">Sagittis scelerisque nulla
-                                    cursus in enim consectetur quam. Dictum urna sed consectetur neque tristique
-                                    pellentesque.</p>
-                            </div>
-                            <form action="#" class="mt-12 sm:mx-auto sm:flex sm:max-w-lg">
-                                <div class="min-w-0 flex-1">
-                                    <label for="cta-email" class="sr-only">Email address</label>
-                                    <input id="cta-email" type="email"
-                                           class="block w-full rounded-md border border-transparent px-5 py-3 text-base text-gray-900 placeholder-gray-500 shadow-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-rose-500"
-                                           placeholder="Enter your email"/>
-                                </div>
-                                <div class="mt-4 sm:mt-0 sm:ml-3">
-                                    <button type="submit"
-                                            class="block w-full rounded-md border border-transparent bg-gray-900 px-5 py-3 text-base font-medium text-white shadow hover:bg-black focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-rose-500 sm:px-10">
-                                        Notify me
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </main>
 
         <!-- Footer section -->
@@ -294,15 +160,15 @@ const footerNavigation: {
                         <a :href="item.href" class="text-base text-gray-400 hover:text-gray-300">{{ item.name }}</a>
                     </div>
                 </nav>
-                <div class="mt-8 flex justify-center space-x-6">
+                <div class="mt-8 flex justify-center Cigaia Davidspace-x-6">
                     <a v-for="item in footerNavigation.social" :key="item.name" :href="item.href"
                        class="text-gray-400 hover:text-gray-300">
                         <span class="sr-only">{{ item.name }}</span>
                         <component :is="item.icon?.toString()" class="h-6 w-6" aria-hidden="true"/>
                     </a>
                 </div>
-                <p class="mt-8 text-center text-base text-gray-400">&copy; 2020 Your Company, Inc. All rights
-                    reserved.</p>
+                <!-- TODO: controllare il nome di Cigaia -->
+                <p class="mt-8 text-center text-base text-gray-400">Made by: Bottari Alberto, Cigaia David, Croce Lorenzo, Pavanetto Marco</p>
             </div>
         </footer>
     </div>
