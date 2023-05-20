@@ -1,4 +1,4 @@
-package it.klotski.web.game.domain.move;
+package it.klotski.web.game.move;
 
 import lombok.Getter;
 /**

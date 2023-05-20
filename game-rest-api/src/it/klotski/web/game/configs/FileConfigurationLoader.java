@@ -19,10 +19,7 @@ import static it.klotski.web.game.constants.ApplicationConstants.START_CONFIGURA
  * Configurazione per la lettura dei dati di configurazione da un file.
  */
 @Component
-public class FileConfiguration {
-    /**
-     * Caricatore di risorse utilizzato per ottenere il percorso del file di configurazione.
-     */
+public class FileConfigurationLoader {
     private final ResourceLoader resourceLoader;
 
     /**
@@ -30,7 +27,7 @@ public class FileConfiguration {
      *
      * @param resourceLoader Il caricatore di risorse utilizzato per ottenere il percorso del file di configurazione.
      */
-    public FileConfiguration(ResourceLoader resourceLoader) {
+    public FileConfigurationLoader(ResourceLoader resourceLoader) {
         this.resourceLoader = resourceLoader;
     }
 

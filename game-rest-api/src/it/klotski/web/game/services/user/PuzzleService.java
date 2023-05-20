@@ -1,10 +1,10 @@
 package it.klotski.web.game.services.user;
 
 import it.klotski.web.game.configs.Board;
-import it.klotski.web.game.domain.game.Game;
-import it.klotski.web.game.domain.move.Direction;
 import it.klotski.web.game.domain.move.Move;
-import it.klotski.web.game.domain.tile.ITile;
+import it.klotski.web.game.domain.game.Game;
+import it.klotski.web.game.move.Direction;
+import it.klotski.web.game.tile.ITile;
 import it.klotski.web.game.domain.user.User;
 import it.klotski.web.game.exceptions.ConfigurationNotFoundException;
 import it.klotski.web.game.payload.reponses.GameResponse;

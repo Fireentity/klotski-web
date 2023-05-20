@@ -1,11 +1,12 @@
 package it.klotski.web.game.services.user;
 
 import it.klotski.web.game.configs.Board;
-import it.klotski.web.game.domain.game.Game;
 import it.klotski.web.game.domain.move.Move;
-import it.klotski.web.game.domain.tile.ITile;
+import it.klotski.web.game.domain.game.Game;
+
 import it.klotski.web.game.payload.reponses.GameResponse;
 import it.klotski.web.game.payload.requests.MoveRequest;
+import it.klotski.web.game.tile.ITile;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;

@@ -1,7 +1,7 @@
-package it.klotski.web.game.services.user.visitor;
+package it.klotski.web.game.services.visitor;
 
-import it.klotski.web.game.domain.tile.IRectangularTile;
-import it.klotski.web.game.domain.tile.IWinningTile;
+import it.klotski.web.game.tile.IRectangularTile;
+import it.klotski.web.game.tile.IWinningTile;
 
 /**
  * Interfaccia che utilizza il design pattern "Visitor" per distinguere i pezzi dal loro comportamento, in modo da

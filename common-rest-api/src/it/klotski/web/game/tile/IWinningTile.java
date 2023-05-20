@@ -1,4 +1,4 @@
-package it.klotski.web.game.domain.tile;
+package it.klotski.web.game.tile;
 
 /**
  * Questa interfaccia rappresenta una tessera vincente del gioco.
