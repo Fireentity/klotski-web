@@ -10,7 +10,7 @@ export default class ForbiddenMiddleware {
             },
             error => {
                 if (error.response.status === 403) {
-                    router.push({path: "/login"})
+                    //router.push({path: "/login"})
                 }
                 return Promise.reject(error);
             }
