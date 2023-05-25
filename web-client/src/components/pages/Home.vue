@@ -1,33 +1,15 @@
 <script setup lang="ts">
 import {ChevronRightIcon, StarIcon} from '@heroicons/vue/20/solid'
+import router from "@/routes/Router.ts";
+import klotski from "~/klotski.png"
+import klotskiMixed from "~/klotski-mixed.png"
 
-interface FooterElement {
-    name: string,
-    href: string,
-    icon?: string
+const redirect = () =>  {
+    router.push('/game')
 }
 
-const stats = [
-    {label: 'Founded', value: '2021'},
-    {label: 'Employees', value: '5'},
-    {label: 'Beta Users', value: '521'},
-    {label: 'Raised', value: '$25M'},
-]
-const logos = [
-    {name: 'Transistor', url: 'https://tailwindui.com/img/logos/transistor-logo-gray-400.svg'},
-    {name: 'Mirage', url: 'https://tailwindui.com/img/logos/mirage-logo-gray-400.svg'},
-    {name: 'Tuple', url: 'https://tailwindui.com/img/logos/tuple-logo-gray-400.svg'},
-    {name: 'Laravel', url: 'https://tailwindui.com/img/logos/laravel-logo-gray-400.svg'},
-    {name: 'StaticKit', url: 'https://tailwindui.com/img/logos/statickit-logo-gray-400.svg'},
-    {name: 'Workcation', url: 'https://tailwindui.com/img/logos/workcation-logo-gray-400.svg'},
-]
-const footerNavigation: {
-    main: FooterElement[]
-    social: FooterElement[]
-} = {
-    main: [],
-    social: []
-}
+const klotskiUrl = klotski;
+const klotskiMixedUrl = klotskiMixed;
 
 </script>
 
@@ -43,10 +25,10 @@ const footerNavigation: {
                                 <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">Klotski</h1>
                                 <p class="mt-6 text-xl text-gray-500">Sito web in cui potrete divertirvi con il famoso puzzle Klotski e sfidare i vostri amici</p>
                             </div>
-                            <form action="#" class="mt-12 sm:flex sm:w-full sm:max-w-lg">
+                            <form @submit.prevent="redirect" class="mt-12 sm:flex sm:w-full sm:max-w-lg">
                                 <div class="mt-4 sm:mt-0 sm:ml-3">
                                     <button type="submit"
-                                            class="block w-full rounded-md border border-transparent bg-primary-600 px-5 py-3 text-base font-medium text-white shadow hover:bg-primary-900 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 sm:px-10">
+                                            class="block w-full rounded-md border border-transparent bg-primary-600 px-5 py-3 text-base font-medium text-white shadow hover:bg-primary-900 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:ring-offset-2 sm:px-10">
                                         Gioca ora
                                     </button>
                                 </div>
@@ -73,7 +55,7 @@ const footerNavigation: {
                         </div>
                         <div class="relative -mr-40 pl-6 sm:mx-auto sm:max-w-3xl sm:px-0 lg:h-full lg:max-w-none lg:pl-12">
                             <img class="w-full rounded-md shadow-xl ring-1 ring-black ring-opacity-5 lg:h-full lg:w-auto lg:max-w-none"
-                                 src="https://tailwindui.com/img/component-images/task-app-rose.jpg" alt=""/>
+                                 :src="klotskiUrl" alt=""/>
                         </div>
                     </div>
                 </div>
@@ -101,33 +83,8 @@ const footerNavigation: {
                             <!-- Testimonial card-->
                             <div class="relative overflow-hidden rounded-2xl pt-64 pb-10 shadow-xl">
                                 <img class="absolute inset-0 h-full w-full object-cover"
-                                     src="https://images.unsplash.com/photo-1521510895919-46920266ddb3?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&fp-x=0.5&fp-y=0.6&fp-z=3&width=1440&height=1440&sat=-100"
+                                     :src="klotskiUrl"
                                      alt=""/>
-                                <div class="absolute inset-0 bg-rose-500 mix-blend-multiply"/>
-                                <div class="absolute inset-0 bg-gradient-to-t from-rose-600 via-rose-600 opacity-90"/>
-                                <div class="relative px-8">
-                                    <div>
-                                        <img class="h-12"
-                                             src="https://tailwindui.com/img/logos/workcation.svg?color=white"
-                                             alt="Workcation"/>
-                                    </div>
-                                    <blockquote class="mt-8">
-                                        <div class="relative text-lg font-medium text-white md:flex-grow">
-                                            <svg class="absolute top-0 left-0 h-8 w-8 -translate-x-3 -translate-y-2 transform text-rose-400"
-                                                 fill="currentColor" viewBox="0 0 32 32" aria-hidden="true">
-                                                <path d="M9.352 4C4.456 7.456 1 13.12 1 19.36c0 5.088 3.072 8.064 6.624 8.064 3.36 0 5.856-2.688 5.856-5.856 0-3.168-2.208-5.472-5.088-5.472-.576 0-1.344.096-1.536.192.48-3.264 3.552-7.104 6.624-9.024L9.352 4zm16.512 0c-4.8 3.456-8.256 9.12-8.256 15.36 0 5.088 3.072 8.064 6.624 8.064 3.264 0 5.856-2.688 5.856-5.856 0-3.168-2.304-5.472-5.184-5.472-.576 0-1.248.096-1.44.192.48-3.264 3.456-7.104 6.528-9.024L25.864 4z"/>
-                                            </svg>
-                                            <p class="relative">Tincidunt integer commodo, cursus etiam aliquam neque,
-                                                et. Consectetur pretium in volutpat, diam. Montes, magna cursus nulla
-                                                feugiat dignissim id lobortis amet.</p>
-                                        </div>
-
-                                        <footer class="mt-4">
-                                            <p class="text-base font-semibold text-rose-200">Sarah Williams, CEO at
-                                                Workcation</p>
-                                        </footer>
-                                    </blockquote>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -151,25 +108,5 @@ const footerNavigation: {
             </div>
 
         </main>
-
-        <!-- Footer section -->
-        <footer class="mt-24 bg-gray-900 sm:mt-12">
-            <div class="mx-auto max-w-md overflow-hidden py-12 px-6 sm:max-w-3xl lg:max-w-7xl lg:px-8">
-                <nav class="-mx-5 -my-2 flex flex-wrap justify-center" aria-label="Footer">
-                    <div v-for="item in footerNavigation.main" :key="item.name" class="px-5 py-2">
-                        <a :href="item.href" class="text-base text-gray-400 hover:text-gray-300">{{ item.name }}</a>
-                    </div>
-                </nav>
-                <div class="mt-8 flex justify-center Cigaia Davidspace-x-6">
-                    <a v-for="item in footerNavigation.social" :key="item.name" :href="item.href"
-                       class="text-gray-400 hover:text-gray-300">
-                        <span class="sr-only">{{ item.name }}</span>
-                        <component :is="item.icon?.toString()" class="h-6 w-6" aria-hidden="true"/>
-                    </a>
-                </div>
-                <!-- TODO: controllare il nome di Cigaia -->
-                <p class="mt-8 text-center text-base text-gray-400">Made by: Bottari Alberto, Cigaia David, Croce Lorenzo, Pavanetto Marco</p>
-            </div>
-        </footer>
     </div>
 </template>

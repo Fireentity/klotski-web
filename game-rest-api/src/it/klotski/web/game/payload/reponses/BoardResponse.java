@@ -1,7 +1,7 @@
 package it.klotski.web.game.payload.reponses;
 
 
-import it.klotski.web.game.tile.ITile;
+import it.klotski.web.game.domain.tile.ITile;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

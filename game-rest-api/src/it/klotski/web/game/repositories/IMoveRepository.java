@@ -1,8 +1,6 @@
 package it.klotski.web.game.repositories;
 
 import it.klotski.web.game.domain.move.Move;
-import it.klotski.web.game.domain.game.Game;
-
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -29,14 +27,14 @@ public interface IMoveRepository extends PagingAndSortingRepository<Move, Long>,
      * @param pageable le informazioni di paginazione
      * @return una lista di oggetti `Move` corrispondenti alle mosse trovate
      */
-    List<Move> findAllByGameOrderByCreatedAtAsc(Game game, Pageable pageable);
+    List<Move> findAllByGame_IdOrderByCreatedAtAsc(long gameId, Pageable pageable);
 
     /**
      * Elimina tutte le mosse di una partita.
      *
      * @param game la partita di cui eliminare le mosse
      */
-    void deleteAllByGame(Game game);
+    void deleteAllByGame_Id(long gameId);
 
     /**
      * Trova la prima mossa di una partita, ordinata per data di creazione in ordine discendente.
@@ -44,5 +42,7 @@ public interface IMoveRepository extends PagingAndSortingRepository<Move, Long>,
      * @param game la partita di cui cercare la prima mossa
      * @return un'istanza di `Optional<Move>` contenente la prima mossa trovata (se presente), altrimenti un'istanza vuota
      */
-    Optional<Move> findFirstByGameOrderByCreatedAtDesc(Game game);
+    Optional<Move> findFirstByGame_IdOrderByCreatedAtDesc(long gameId);
+
+    void deleteById(long id);
 }

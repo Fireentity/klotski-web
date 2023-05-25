@@ -3,21 +3,23 @@ package it.klotski.web.game.controllers;
 import com.google.gson.Gson;
 import it.klotski.web.game.configs.Board;
 import it.klotski.web.game.domain.game.Game;
+import it.klotski.web.game.domain.game.IGame;
 import it.klotski.web.game.domain.move.Move;
 import it.klotski.web.game.domain.tile.ITile;
+import it.klotski.web.game.domain.tile.strategy.RectangularTileMatrixInsertionStrategy;
+import it.klotski.web.game.domain.tile.strategy.RectangularTileMoveValidationStrategy;
+import it.klotski.web.game.domain.tile.visitor.ITileVisitor;
+import it.klotski.web.game.domain.tile.visitor.RectangularTileVisitor;
+import it.klotski.web.game.domain.tile.visitor.WinningTileVisitor;
 import it.klotski.web.game.domain.user.User;
 import it.klotski.web.game.exceptions.GameNotFoundException;
 import it.klotski.web.game.exceptions.InvalidBoardConfigurationException;
 import it.klotski.web.game.exceptions.UserNotFoundException;
 import it.klotski.web.game.payload.reponses.MoveResponse;
 import it.klotski.web.game.payload.requests.MoveRequest;
+import it.klotski.web.game.payload.requests.UndoRequest;
 import it.klotski.web.game.repositories.IUserRepository;
-import it.klotski.web.game.services.user.IPuzzleService;
-import it.klotski.web.game.services.user.strategy.RectangularTileMatrixInsertionStrategy;
-import it.klotski.web.game.services.user.strategy.RectangularTileMoveValidationStrategy;
-import it.klotski.web.game.services.user.visitor.ITileVisitor;
-import it.klotski.web.game.services.user.visitor.RectangularTileVisitor;
-import it.klotski.web.game.services.user.visitor.WinningTileVisitor;
+import it.klotski.web.game.services.IPuzzleService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -97,6 +99,7 @@ public class MoveController {
             throw new GameNotFoundException();
         }
 
+        //TODO move into PuzzleService
         Board startConfiguration = boards.get(game.getStartConfigurationId());
 
         /*Inserisce le tessere nella matrice "board" utilizzando una strategia specifica e applicando i visitatori
@@ -129,7 +132,7 @@ public class MoveController {
         }
 
         //Verifica se la griglia è coerente con l'ultimo movimento registrato
-        Optional<Move> lastMove = puzzleService.findLastMove(game);
+        Optional<Move> lastMove = puzzleService.findLastMove(game.getId());
         if (lastMove.isPresent() && !lastMove.get().getBoardHash().equals(boardHash)) {
             throw new InvalidBoardConfigurationException();
         }
@@ -148,7 +151,7 @@ public class MoveController {
     /**
      * Ottiene la lista dei movimenti effettuati in un gioco specifico.
      *
-     * @param gameId L'ID del gioco.
+     * @param gameId L'ID della partita.
      * @param page   La pagina dei risultati da restituire (valore predefinito: 0).
      * @param size   La dimensione della pagina dei risultati (valore predefinito: 10).
      * @return La risposta contenente la lista dei movimenti.
@@ -165,7 +168,18 @@ public class MoveController {
         if (game.getPlayer().getId() != user.getId()) {
             throw new GameNotFoundException();
         }
-        return ResponseEntity.ok(puzzleService.findMovesByGame(game, PageRequest.of(page, size)));
+        return ResponseEntity.ok(puzzleService.findMovesByGame_Id(game.getId(), PageRequest.of(page, size)));
+    }
+
+    @PostMapping("/undo")
+    public ResponseEntity<MoveResponse> undo(@RequestBody UndoRequest undoRequest) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+        Game game = puzzleService.findGameById(undoRequest.getGameId()).orElseThrow(GameNotFoundException::new);
+        if (game.getPlayer().getId() != user.getId()) {
+            throw new GameNotFoundException();
+        }
+        return ResponseEntity.ok(new MoveResponse(puzzleService.undo(game, undoRequest.getTiles())));
     }
 
     /**
@@ -182,7 +196,7 @@ public class MoveController {
     public ResponseEntity<MoveResponse> reset(@RequestParam long gameId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authentication.getPrincipal();
-        Game game = puzzleService.findGameById(gameId).orElseThrow(GameNotFoundException::new);
+        IGame game = puzzleService.findGameById(gameId).orElseThrow(GameNotFoundException::new);
 
         if (user.getId() != game.getPlayer().getId()) {
             throw new GameNotFoundException();
@@ -194,7 +208,7 @@ public class MoveController {
 
         Board board = boards.get(game.getStartConfigurationId());
 
-        puzzleService.deleteMovesByGame(game);
+        puzzleService.deleteMovesByGame_Id(game.getId());
         return ResponseEntity.ok(new MoveResponse(board.getTiles()));
     }
 }

@@ -1,4 +1,7 @@
 import {createWebHistory, createRouter} from "vue-router";
+import Config from "@/config/Config.ts";
+import store from "@/store/Store.ts";
+
 const routes = [
     {
         path: '/:pathMatch(.*)*',
@@ -29,6 +32,11 @@ const routes = [
         name: "register",
         component: () => import("@/components/pages/Registration.vue"),
     },
+    {
+        path: "/rules",
+        name: "rules",
+        component: () => import("@/components/pages/Rules.vue"),
+    },
 ];
 
 const router = createRouter({
@@ -36,4 +44,11 @@ const router = createRouter({
     routes
 });
 
+router.beforeEach((to) => {
+    store.dispatch('isAuthenticated', (response) => {
+        if(response.data === false && !Config.publicPages.includes(to.path)) {
+            router.push('/login')
+        }
+    })
+})
 export default router

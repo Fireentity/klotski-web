@@ -7,7 +7,7 @@ import it.klotski.web.game.domain.user.User;
 import it.klotski.web.game.payload.reponses.GameResponse;
 import it.klotski.web.game.repositories.IGameRepository;
 import it.klotski.web.game.repositories.IUserRepository;
-import it.klotski.web.game.services.user.PuzzleService;
+import it.klotski.web.game.services.PuzzleService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

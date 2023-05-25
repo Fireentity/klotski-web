@@ -10,10 +10,10 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.HashMap;
 import java.util.List;
 
-import static it.klotski.web.game.constants.ApplicationConstants.ADAPTER_FACTORY;
-import static it.klotski.web.game.constants.ApplicationConstants.START_CONFIGURATIONS_FILE_PATH;
+import static it.klotski.web.game.constants.ApplicationConstants.*;
 
 /**
  * Configurazione per la lettura dei dati di configurazione da un file.
@@ -38,9 +38,16 @@ public class FileConfigurationLoader {
      * @throws IOException Se si verifica un errore durante la lettura del file.
      */
     @Bean
-    private List<Board> configurations() throws IOException {
+    private List<Board> boardConfigurations() throws IOException {
         Gson gson = new GsonBuilder().registerTypeAdapterFactory(ADAPTER_FACTORY).create();
         File file = resourceLoader.getResource(START_CONFIGURATIONS_FILE_PATH).getFile();
         return gson.fromJson(Files.readString(file.toPath()), new TypeToken<List<Board>>(){}.getType());
+    }
+
+    @Bean
+    private HashMap<String, Movement> solutionsConfigurations() throws IOException {
+        Gson gson = new Gson();
+        File file = resourceLoader.getResource(SOLUTIONS_FILE_PATH).getFile();
+        return gson.fromJson(Files.readString(file.toPath()), new TypeToken<HashMap<String, Movement>>(){}.getType());
     }
 }

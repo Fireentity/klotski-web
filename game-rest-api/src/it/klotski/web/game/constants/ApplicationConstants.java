@@ -20,7 +20,9 @@ public class ApplicationConstants {
     /**
      * Il formato della data utilizzato nell'applicazione.
      */
-    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
+    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+
+    public static final String SOLUTIONS_FILE_PATH = "classpath:config/solutions.json";
 
     /**
      * Il percorso del file di configurazione delle configurazioni di partenza.

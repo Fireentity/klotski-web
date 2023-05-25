@@ -1,6 +1,6 @@
 package it.klotski.web.game.payload.reponses;
 
-import it.klotski.web.game.domain.game.Game;
+import it.klotski.web.game.domain.game.GameView;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -38,11 +38,6 @@ public class GameInfoResponse {
     private final int moves;
 
     /**
-     * La durata del gioco in millisecondi.
-     */
-    private final long duration;
-
-    /**
      * Lo stato di completamento del gioco.
      */
     private final boolean finished;
@@ -53,12 +48,11 @@ public class GameInfoResponse {
      * @param game L'oggetto Game da cui ottenere le informazioni.
      * @return Un'istanza di GameInfoResponse contenente le informazioni del gioco.
      */
-    public static GameInfoResponse from(Game game) {
+    public static GameInfoResponse from(GameView game) {
         return new GameInfoResponse(game.getId(),
                 game.getStartConfigurationId(),
                 DATE_FORMAT.format(game.getCreatedAt()),
                 game.getMoves(),
-                game.getDuration(),
                 game.isFinished());
     }
 
@@ -77,10 +71,11 @@ public class GameInfoResponse {
 
         if (getId() != that.getId()) return false;
         if (getStartConfigurationId() != that.getStartConfigurationId()) return false;
-        if (getDuration() != that.getDuration()) return false;
+        if (getMoves() != that.getMoves()) return false;
         if (isFinished() != that.isFinished()) return false;
         return getDate().equals(that.getDate());
     }
+
 
     /**
      * Restituisce l'hashCode dell'oggetto GameInfoResponse.
@@ -92,7 +87,7 @@ public class GameInfoResponse {
         int result = (int) (getId() ^ (getId() >>> 32));
         result = 31 * result + getStartConfigurationId();
         result = 31 * result + getDate().hashCode();
-        result = 31 * result + (int) (getDuration() ^ (getDuration() >>> 32));
+        result = 31 * result + getMoves();
         result = 31 * result + (isFinished() ? 1 : 0);
         return result;
     }

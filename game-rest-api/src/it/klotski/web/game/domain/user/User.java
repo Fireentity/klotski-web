@@ -9,11 +9,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-@Setter
-@Entity
-@Getter
-@Table(name = "users")
-
 /**
  * Questa classe rappresenta un utente del sistema.
  *
@@ -21,6 +16,10 @@ import java.util.List;
  * lo stato dell'account e le autorizzazioni.
  * Implementa l'interfaccia UserDetails di Spring Security per supportare l'autenticazione e l'autorizzazione.
  */
+@Setter
+@Entity
+@Getter
+@Table(name = "users")
 public class User implements UserDetails {
     /**
      * Identificatore univoco dell'utente.

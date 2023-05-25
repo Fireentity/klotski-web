@@ -1,7 +1,7 @@
-import RuntimeTypeAdapterFactory from "@/types/factory/RuntimeTypeAdapterFactory.ts";
-import RectangularTile from "@/types/models/RectangularTile.ts";
-import Tile from "@/types/models/Tile.ts";
-import WinningTile from "@/types/models/WinningTile.ts";
+import RuntimeTypeAdapterFactory from '@/types/factory/RuntimeTypeAdapterFactory.ts';
+import RectangularTile from '@/types/models/RectangularTile.ts';
+import Tile from '@/types/models/Tile.ts';
+import WinningTile from '@/types/models/WinningTile.ts';
 
 const typeAdapterFactory = new RuntimeTypeAdapterFactory('type')
     .addType('rectangular', (data) => {
@@ -17,7 +17,7 @@ const fallbackStartConfiguration = {
     id: 0,
     tiles: [
         {
-            type: "rectangular",
+            type: 'rectangular',
             id: 0,
             x: 0,
             y: 0,
@@ -25,7 +25,7 @@ const fallbackStartConfiguration = {
             height: 2
         },
         {
-            type: "winning",
+            type: 'winning',
             id: 1,
             x: 1,
             y: 0,
@@ -33,7 +33,7 @@ const fallbackStartConfiguration = {
             height: 2
         },
         {
-            type: "rectangular",
+            type: 'rectangular',
             id: 2,
             x: 3,
             y: 0,
@@ -41,7 +41,7 @@ const fallbackStartConfiguration = {
             height: 2
         },
         {
-            type: "rectangular",
+            type: 'rectangular',
             id: 3,
             x: 3,
             y: 0,
@@ -49,7 +49,7 @@ const fallbackStartConfiguration = {
             height: 2
         },
         {
-            type: "rectangular",
+            type: 'rectangular',
             id: 4,
             x: 0,
             y: 2,
@@ -57,7 +57,7 @@ const fallbackStartConfiguration = {
             height: 2
         },
         {
-            type: "rectangular",
+            type: 'rectangular',
             id: 5,
             x: 1,
             y: 2,
@@ -65,7 +65,7 @@ const fallbackStartConfiguration = {
             height: 1
         },
         {
-            type: "rectangular",
+            type: 'rectangular',
             id: 6,
             x: 2,
             y: 2,
@@ -73,7 +73,7 @@ const fallbackStartConfiguration = {
             height: 1
         },
         {
-            type: "rectangular",
+            type: 'rectangular',
             id: 7,
             x: 3,
             y: 2,
@@ -81,7 +81,7 @@ const fallbackStartConfiguration = {
             height: 2
         },
         {
-            type: "rectangular",
+            type: 'rectangular',
             id: 8,
             x: 1,
             y: 3,
@@ -89,7 +89,7 @@ const fallbackStartConfiguration = {
             height: 1
         },
         {
-            type: "rectangular",
+            type: 'rectangular',
             id: 9,
             x: 2,
             y: 3,
@@ -97,7 +97,7 @@ const fallbackStartConfiguration = {
             height: 1
         },
         {
-            type: "rectangular",
+            type: 'rectangular',
             id: 10,
             x: 1,
             y: 4,
@@ -125,7 +125,7 @@ const config = {
     },
     typeAdapterFactory: typeAdapterFactory,
     navElements: [
-        {name: 'home'}, {name: 'rules'}, {name: 'play'}
+        {name: 'Home', path: '/home'}, {name: 'Regole', path: '/rules'}, {name: 'Game', path: '/game'}
     ]
 }
 

@@ -22,14 +22,11 @@ const props = defineProps<{
             <div class="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
                 <div class="flex flex-row">
                     <p class="text-sm text-gray-500 ml-5 mr-10">
-                        Mosse: {{ props.game.moves }}
-                    </p>
-                    <p class="text-sm text-gray-500 ml-5">
-                        Durata partita: {{ props.game.duration }}
+                        Mosse: <strong>{{ props.game.moves }}</strong>
                     </p>
                 </div>
                 <div class="whitespace-nowrap text-right text-sm text-gray-500">
-                    <time :datetime="props.game.date">{{ props.game.date }}</time>
+                    <strong><time :datetime="props.game.date">{{ props.game.date }}</time></strong>
                 </div>
             </div>
         </div>

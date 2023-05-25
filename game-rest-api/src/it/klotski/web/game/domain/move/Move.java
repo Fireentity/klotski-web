@@ -1,9 +1,6 @@
 package it.klotski.web.game.domain.move;
 
-
-
 import it.klotski.web.game.domain.game.Game;
-import it.klotski.web.game.move.Direction;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,10 +9,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
 
-@Setter
-@Getter
-@Entity
-@Table(name = "moves")
 
 /**
  * Classe che rappresenta un'istanza di "mossa" all'interno del gioco.
@@ -24,6 +17,10 @@ import java.sql.Timestamp;
  * Contiene informazioni come l'identificatore, la partita di appartenenza, la tessera coinvolta nella mossa,
  * la direzione di movimento, la configurazione di appartenenza, la data di creazione e la data di aggiornamento.
  */
+@Setter
+@Getter
+@Entity
+@Table(name = "moves")
 public class Move {
     /**
      * L'identificatore univoco della mossa.

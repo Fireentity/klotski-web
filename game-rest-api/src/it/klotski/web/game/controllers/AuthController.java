@@ -2,12 +2,13 @@ package it.klotski.web.game.controllers;
 
 import it.klotski.web.game.payload.requests.LoginRequest;
 import it.klotski.web.game.payload.requests.RegisterRequest;
-import it.klotski.web.game.services.puzzle.UserService;
+import it.klotski.web.game.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,10 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * La classe AuthController gestisce le operazioni di autenticazione e registrazione degli utenti.
@@ -52,8 +50,8 @@ public class AuthController {
     /**
      * Costruisce un'istanza di AuthController con i servizi utente e il gestore di autenticazione specificati.
      *
-     * @param userService             il servizio utente utilizzato per gestire le operazioni legate agli utenti
-     * @param authenticationManager   il gestore di autenticazione utilizzato per autenticare gli utenti
+     * @param userService           il servizio utente utilizzato per gestire le operazioni legate agli utenti
+     * @param authenticationManager il gestore di autenticazione utilizzato per autenticare gli utenti
      */
     @Autowired
     public AuthController(UserService userService,
@@ -94,5 +92,11 @@ public class AuthController {
     public ResponseEntity<String> register(@RequestBody RegisterRequest registerRequest) {
         userService.createUser(registerRequest);
         return ResponseEntity.ok("Utente registrato con successo");
+    }
+
+    @GetMapping("/is-authenticated")
+    public ResponseEntity<Boolean> isAuthenticated() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return ResponseEntity.ok(!(authentication instanceof AnonymousAuthenticationToken));
     }
 }

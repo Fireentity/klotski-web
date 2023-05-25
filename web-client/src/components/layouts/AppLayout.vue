@@ -4,21 +4,18 @@ import {Bars3Icon, BellIcon, XMarkIcon} from '@heroicons/vue/24/outline'
 import {PuzzlePieceIcon} from '@heroicons/vue/24/solid'
 import {useStore} from "vuex";
 import Config from "@/config/Config.ts";
-import {reactive, ref} from "vue";
-
+import {computed, reactive, ref} from "vue";
+import AppLink from "@/components/AppLink.vue";
 
 const store = useStore()
 const logout = () => store.dispatch('logout')
 
-const navElements=Config.navElements
+const navElements = Config.navElements
 
-let isAuthenticated = ref(false);
+const user = store.getters['getUser']
 
-store.dispatch('isAuthenticated', ()=>{
-    Object.assign(isAuthenticated, true);
-}) ;
-
-
+store.dispatch('isAuthenticated', () => {
+});
 
 </script>
 
@@ -30,7 +27,7 @@ store.dispatch('isAuthenticated', ()=>{
                     <div class="-ml-2 mr-2 flex items-center md:hidden">
                         <!-- Mobile menu button -->
                         <DisclosureButton
-                                class="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                                class="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-600">
                             <span class="sr-only">Open main menu</span>
                             <Bars3Icon v-if="!open" class="block h-6 w-6" aria-hidden="true"/>
                             <XMarkIcon v-else class="block h-6 w-6" aria-hidden="true"/>
@@ -41,19 +38,15 @@ store.dispatch('isAuthenticated', ()=>{
 
                     </div>
                     <div class="hidden md:ml-6 md:flex md:space-x-8">
-                        <!-- Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" -->
-                        <a href="#"
-                           v-for="element in navElements"
-                           class="inline-flex items-center border-b-2 border-indigo-500 px-1 pt-1 text-sm font-medium text-gray-900">{{element.name}}</a>
-                        <a href="#"
-                           class="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">Team</a>
-                        <a href="#"
-                           class="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">Projects</a>
-                        <a href="#"
-                           class="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">Calendar</a>
+                        <AppLink :to="element.path" :href="element.path"
+                                     v-for="element in navElements"
+                                     inactive-class="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                                     active-class="inline-flex items-center border-b-2 border-primary-600 px-1 pt-1 text-sm font-medium text-gray-900">
+                            {{ element.name }}
+                        </AppLink>
                     </div>
                 </div>
-                <div v-if="isAuthenticated" class="flex items-center">
+                <div v-if="user.authenticated" class="flex items-center">
                     <div class="hidden md:ml-4 md:flex md:flex-shrink-0 md:items-center">
                         <div class="relative ml-3">
                             <a @click="logout" class="cursor-pointer font-medium text-gray-900">Esci</a>
@@ -65,53 +58,18 @@ store.dispatch('isAuthenticated', ()=>{
 
         <DisclosurePanel class="md:hidden">
             <div class="space-y-1 pt-2 pb-3">
-                <!-- Current: "bg-indigo-50 border-indigo-500 text-indigo-700", Default: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700" -->
-                <DisclosureButton as="a" href="#"
-                                  class="block border-l-4 border-indigo-500 bg-indigo-50 py-2 pl-3 pr-4 text-base font-medium text-indigo-700 sm:pl-5 sm:pr-6">
-                    Dashboard
-                </DisclosureButton>
-                <DisclosureButton as="a" href="#"
-                                  class="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700 sm:pl-5 sm:pr-6">
-                    Team
-                </DisclosureButton>
-                <DisclosureButton as="a" href="#"
-                                  class="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700 sm:pl-5 sm:pr-6">
-                    Projects
-                </DisclosureButton>
-                <DisclosureButton as="a" href="#"
-                                  class="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700 sm:pl-5 sm:pr-6">
-                    Calendar
-                </DisclosureButton>
+                <AppLink :to="element.path" :href="element.path"
+                         v-for="element in navElements"
+                         inactive-class="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700 sm:pl-5 sm:pr-6"
+                         active-class="block border-l-4 border-primary-600 bg-primary-300 py-2 pl-3 pr-4 text-base font-medium text-primary-600 sm:pl-5 sm:pr-6">
+                    {{ element.name }}
+                </AppLink>
             </div>
-            <div class="border-t border-gray-200 pt-4 pb-3">
-                <div class="flex items-center px-4 sm:px-6">
-                    <div class="flex-shrink-0">
-                        <img class="h-10 w-10 rounded-full"
-                             src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                             alt=""/>
-                    </div>
-                    <div class="ml-3">
-                        <div class="text-base font-medium text-gray-800">Tom Cook</div>
-                        <div class="text-sm font-medium text-gray-500">tom@example.com</div>
-                    </div>
-                    <button type="button"
-                            class="ml-auto flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                        <span class="sr-only">View notifications</span>
-                        <BellIcon class="h-6 w-6" aria-hidden="true"/>
-                    </button>
-                </div>
+            <div v-if="user.authenticated" class="border-t border-gray-200 pt-4 pb-3">
                 <div class="mt-3 space-y-1">
-                    <DisclosureButton as="a" href="#"
+                    <DisclosureButton as="a" @click="logout"
                                       class="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 sm:px-6">
-                        Your Profile
-                    </DisclosureButton>
-                    <DisclosureButton as="a" href="#"
-                                      class="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 sm:px-6">
-                        Settings
-                    </DisclosureButton>
-                    <DisclosureButton as="a" href="#"
-                                      class="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 sm:px-6">
-                        Sign out
+                        Esci
                     </DisclosureButton>
                 </div>
             </div>

@@ -11,10 +11,8 @@ import java.util.Optional;
 
 /**
  * Repository per l'accesso ai dati delle partite.
- *
  * L'interfaccia `IGameRepository` estende l'interfaccia `PagingAndSortingRepository` e `CrudRepository` di Spring Data
  * per fornire operazioni di accesso ai dati delle partite.
- *
  * Viene utilizzata l'annotazione `@Repository` per indicare che questa interfaccia è un componente di repository gestito da Spring.
  */
 @Repository
@@ -27,7 +25,7 @@ public interface IGameRepository extends PagingAndSortingRepository<Game, Long>,
      * @param pageable le informazioni di paginazione
      * @return una lista di oggetti `Game` corrispondenti alle partite trovate
      */
-    List<Game> findAllByPlayer_Email(String email, Pageable pageable);
+    List<Game> findAllByPlayer_EmailOrderByCreatedAtDesc(String email, Pageable pageable);
 
     /**
      * Trova una partita per ID.

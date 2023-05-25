@@ -1,12 +1,12 @@
 package it.klotski.web.game.controllers;
 
 import it.klotski.web.game.configs.Board;
-import it.klotski.web.game.domain.game.Game;
+import it.klotski.web.game.domain.game.GameView;
 import it.klotski.web.game.domain.user.User;
 import it.klotski.web.game.exceptions.GameNotFoundException;
 import it.klotski.web.game.payload.reponses.GameResponse;
 import it.klotski.web.game.payload.requests.GameRequest;
-import it.klotski.web.game.services.user.IPuzzleService;
+import it.klotski.web.game.services.IPuzzleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -59,7 +59,7 @@ public class GameController {
     public ResponseEntity<GameResponse> getGame(@RequestParam long gameId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authentication.getPrincipal();
-        Game game = puzzleService.findGameById(gameId).orElseThrow(GameNotFoundException::new);
+        GameView game = puzzleService.findGameViewById(gameId).orElseThrow(GameNotFoundException::new);
         if (game.getPlayer().getId() != user.getId()) {
             throw new GameNotFoundException();
         }
@@ -76,12 +76,12 @@ public class GameController {
     @GetMapping(path = "/unfinished")
     public ResponseEntity<GameResponse> getLastUnfinishedGame() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Optional<Game> gameOptional = puzzleService.findLastUnfinishedGame(authentication.getName());
+        Optional<GameView> gameOptional = puzzleService.findLastUnfinishedGame(authentication.getName());
         if (gameOptional.isEmpty()) {
             return ResponseEntity.ok().build();
         }
 
-        Game game = gameOptional.get();
+        GameView game = gameOptional.get();
         Board board = puzzleService.calculateCurrentConfiguration(game);
 
         return ResponseEntity.ok(GameResponse.from(game, board));

@@ -2,15 +2,16 @@ package it.klotski.web.game.domain.game;
 
 import it.klotski.web.game.domain.user.User;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  * Questa classe rappresenta un gioco Klotski.
- *
  * Un oggetto Game contiene informazioni sul gioco, come l'identificatore, il giocatore associato,
  * l'ID della configurazione di partenza, la durata del gioco, le informazioni sulla creazione e l'aggiornamento,
  * il numero di mosse effettuate e lo stato di completamento del gioco.
@@ -20,7 +21,7 @@ import java.sql.Date;
 @Getter
 @Table(name = "games")
 @NoArgsConstructor
-public class Game {
+public class Game implements IGame {
     /**
      * Identificatore univoco del gioco.
      */
@@ -48,18 +49,13 @@ public class Game {
      * Data e ora di creazione del gioco.
      */
     @CreationTimestamp
-    private Date createdAt;
+    private Timestamp createdAt;
 
     /**
      * Data e ora di aggiornamento del gioco.
      */
     @UpdateTimestamp
-    private Date updatedAt;
-
-    /**
-     * Il numero di mosse effettuate nel gioco.
-     */
-    private int moves;
+    private Timestamp updatedAt;
 
     /**
      * Lo stato di completamento del gioco.
