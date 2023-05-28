@@ -6,6 +6,7 @@ import {useStore} from "vuex";
 import Config from "@/config/Config.ts";
 import {computed, reactive, ref} from "vue";
 import AppLink from "@/components/AppLink.vue";
+import router from "@/routes/Router.ts";
 
 const store = useStore()
 const logout = () => store.dispatch('logout')
@@ -17,6 +18,9 @@ const user = store.getters['getUser']
 store.dispatch('isAuthenticated', () => {
 });
 
+const redirect = () => {
+    router.push('/login')
+}
 </script>
 
 <template>
@@ -53,6 +57,13 @@ store.dispatch('isAuthenticated', () => {
                         </div>
                     </div>
                 </div>
+                <div v-else class="flex items-center">
+                    <div class="hidden md:ml-4 md:flex md:flex-shrink-0 md:items-center">
+                        <div class="relative ml-3">
+                            <a @click="redirect" class="cursor-pointer font-medium text-gray-900">Login</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -70,6 +81,14 @@ store.dispatch('isAuthenticated', () => {
                     <DisclosureButton as="a" @click="logout"
                                       class="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 sm:px-6">
                         Esci
+                    </DisclosureButton>
+                </div>
+            </div>
+            <div v-else class="border-t border-gray-200 pt-4 pb-3">
+                <div class="mt-3 space-y-1">
+                    <DisclosureButton as="a" @click="redirect"
+                                      class="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 sm:px-6">
+                        Login
                     </DisclosureButton>
                 </div>
             </div>

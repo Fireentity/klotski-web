@@ -15,6 +15,9 @@ import java.util.TreeSet;
 @Getter
 @RequiredArgsConstructor
 public class Board {
+    private final int winningX;
+
+    private final int winningY;
 
     /**
      * Larghezza del tabellone.

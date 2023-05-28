@@ -16,6 +16,7 @@ import java.util.TreeSet;
  * lo stato aggiornato dopo un'operazione di spostamento.
  */
 public class MoveResponse {
+    private final boolean winning;
     /**
      * L'insieme di tessere che rappresentano lo stato aggiornato dopo un'operazione di spostamento.
      */

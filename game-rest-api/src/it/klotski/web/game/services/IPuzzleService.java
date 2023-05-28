@@ -7,8 +7,10 @@ import it.klotski.web.game.domain.game.IGame;
 import it.klotski.web.game.domain.move.Move;
 import it.klotski.web.game.domain.tile.ITile;
 import it.klotski.web.game.payload.reponses.GameResponse;
+import it.klotski.web.game.payload.reponses.MoveResponse;
 import it.klotski.web.game.payload.requests.MoveRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.Optional;
@@ -64,6 +66,10 @@ public interface IPuzzleService {
      * @return l'ultima mossa della partita contenuta in game.
      */
     Optional<Move> findLastMove(long gameId);
+
+    void setGameFinished(Game game);
+
+    ResponseEntity<MoveResponse> moveTile(MoveRequest moveRequest, Game game);
 
     //TODO comment this
     TreeSet<ITile> undo(IGame game, TreeSet<ITile> tiles);

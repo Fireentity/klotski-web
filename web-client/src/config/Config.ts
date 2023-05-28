@@ -115,7 +115,7 @@ fallbackStartConfiguration.tiles.forEach(tile => {
 
 const config = {
     publicPages: [
-        '/', '/rules', '/home', '/register', '/login'
+        '/', '/rules', '/home', '/register', '/login', '/win'
     ],
     fallbackStartConfiguration: {
         boardWidth: fallbackStartConfiguration.boardWidth,

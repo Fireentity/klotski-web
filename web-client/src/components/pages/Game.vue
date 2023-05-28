@@ -19,10 +19,11 @@ const createGame = () => {
 }
 
 store.dispatch('getGameInfo', (response) => {
-    if (response.data.length === 0) {
-        createGame();
-    }
-    store.dispatch('getLastUnfinished')
+    store.dispatch('getLastUnfinished', (response) => {
+        if(response.data.length === 0) {
+            createGame();
+        }
+    })
 });
 store.dispatch('getStartConfiguration');
 
@@ -80,10 +81,10 @@ const nextBestMove = () => {
                         <Card>
                             <div class="flex justify-center w-full h-full">
                                 <div class="col-span-1 w-full flex justify-center h-full">
-                                    <div class="grid grid-cols-4 grid-rows-5 gap-4 w-full aspect-4/5 h-full">
+                                    <div :class="`grid grid-cols-${currentGame.board.boardWidth} grid-rows-${currentGame.board.boardHeight} gap-4 w-full aspect-4/5 h-full`">
                                         <component v-for="tile in currentGame.board.tiles" :is="visit(tile).component"
                                                    :tile="visit(tile).tile" :tiles="currentGame.board.tiles"/>
-                                        <div class="bg-gradient-to-t opacity-50 rounded-t-lg from-rose-600 from-2% to-10% col-start-2 col-span-2 row-start-5 col-span-1 -mb-6">
+                                        <div class="bg-gradient-to-t self-end opacity-50 rounded-t-lg from-rose-600 from-2% to-100% col-start-2 col-span-2 row-start-5 col-span-1 -mb-6 h-6">
 
                                         </div>
                                     </div>

@@ -37,6 +37,10 @@ const routes = [
         name: "rules",
         component: () => import("@/components/pages/Rules.vue"),
     },
+    {
+        path: "/win",
+        component: () => import("@/components/pages/Win.vue")
+    }
 ];
 
 const router = createRouter({

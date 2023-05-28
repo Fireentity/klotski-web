@@ -9,6 +9,9 @@ export default class GamesMiddleware {
                 if (!response.config.url?.includes("/games")) {
                     return response;
                 }
+                if(response.data.length === 0) {
+                    return response;
+                }
                 const tiles: Tile[] = [];
                 response.data.board.tiles.forEach((tile) => {
                     tiles.push(Config.typeAdapterFactory.parse(tile))

@@ -1,25 +1,37 @@
 package it.klotski.web.game.services;
 
+import com.google.gson.Gson;
 import it.klotski.web.game.configs.Board;
+import it.klotski.web.game.domain.game.Game;
 import it.klotski.web.game.domain.game.GameView;
 import it.klotski.web.game.domain.game.IGame;
-import it.klotski.web.game.domain.move.Move;
-import it.klotski.web.game.domain.game.Game;
-import it.klotski.web.game.exceptions.MoveNotFoundException;
 import it.klotski.web.game.domain.move.Direction;
+import it.klotski.web.game.domain.move.Move;
 import it.klotski.web.game.domain.tile.ITile;
+import it.klotski.web.game.domain.tile.strategy.RectangularTileMatrixInsertionStrategy;
+import it.klotski.web.game.domain.tile.strategy.RectangularTileMoveValidationStrategy;
+import it.klotski.web.game.domain.tile.strategy.WinConditionStrategy;
+import it.klotski.web.game.domain.tile.visitor.ITileVisitor;
+import it.klotski.web.game.domain.tile.visitor.RectangularTileVisitor;
+import it.klotski.web.game.domain.tile.visitor.WinningTileVisitor;
 import it.klotski.web.game.domain.user.User;
 import it.klotski.web.game.exceptions.ConfigurationNotFoundException;
+import it.klotski.web.game.exceptions.InvalidBoardConfigurationException;
+import it.klotski.web.game.exceptions.MoveNotFoundException;
 import it.klotski.web.game.payload.reponses.GameResponse;
+import it.klotski.web.game.payload.reponses.MoveResponse;
 import it.klotski.web.game.payload.requests.MoveRequest;
 import it.klotski.web.game.repositories.IGameRepository;
 import it.klotski.web.game.repositories.IGameViewRepository;
 import it.klotski.web.game.repositories.IMoveRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 import static it.klotski.web.game.constants.ApplicationConstants.DEFAULT_PAGE_SIZE;
@@ -34,6 +46,7 @@ public class PuzzleService implements IPuzzleService {
     private final IMoveRepository moveRepository;
     private final UserDetailsService userService;
     private final IGameViewRepository gameViewRepository;
+    private final Gson gson;
 
     //TODO comment this
     /**
@@ -44,17 +57,20 @@ public class PuzzleService implements IPuzzleService {
      * @param moveRepository     tabella delle mosse.
      * @param userService        service per la ricerca degli utenti nella tabella degli utenti.
      * @param gameViewRepository
+     * @param gson
      */
     public PuzzleService(List<Board> boards,
                          IGameRepository gameRepository,
                          IMoveRepository moveRepository,
                          UserDetailsService userService,
-                         IGameViewRepository gameViewRepository) {
+                         IGameViewRepository gameViewRepository,
+                         Gson gson) {
         this.boards = boards;
         this.gameRepository = gameRepository;
         this.moveRepository = moveRepository;
         this.userService = userService;
         this.gameViewRepository = gameViewRepository;
+        this.gson = gson;
     }
 
     /**
@@ -127,6 +143,72 @@ public class PuzzleService implements IPuzzleService {
     @Override
     public Optional<Move> findLastMove(long gameId) {
         return moveRepository.findFirstByGame_IdOrderByCreatedAtDesc(gameId);
+    }
+
+    @Override
+    public void setGameFinished(Game game) {
+        game.setFinished(true);
+        gameRepository.save(game);
+    }
+
+    @Override
+    public ResponseEntity<MoveResponse> moveTile(MoveRequest moveRequest, Game game) {
+        Board startConfiguration = boards.get(game.getStartConfigurationId());
+
+        /*Inserisce le tessere nella matrice "board" utilizzando una strategia specifica e applicando i visitatori
+         corrispondenti a ciascuna tessera.*/
+        ITile[][] board = new ITile[startConfiguration.getBoardHeight()][startConfiguration.getBoardWidth()];
+        RectangularTileMatrixInsertionStrategy insertionStrategy = new RectangularTileMatrixInsertionStrategy(board,
+                startConfiguration.getBoardHeight(),
+                startConfiguration.getBoardWidth());
+        List<ITileVisitor> insertionVisitors = List.of(new RectangularTileVisitor(insertionStrategy), new WinningTileVisitor(insertionStrategy));
+        moveRequest.getTiles().forEach(tile -> insertionVisitors.forEach(tile::accept));
+
+        /*Crea una RectangularTileMoveValidationStrategy che viene utilizzata per validare una mossa sulla matrice
+         board in base alla direzione specificata in moveRequest.getDirection()*/
+        RectangularTileMoveValidationStrategy validationStrategy = new RectangularTileMoveValidationStrategy(
+                board,
+                moveRequest.getDirection());
+
+        /*Vengono creati due visitatori (RectangularTileVisitor e WinningTileVisitor) che vengono passati alla
+          strategia di validazione. I visitatori sono utilizzati per visitare le tessere coinvolte nella mossa
+           e applicare la logica di validazione specifica.*/
+        List<ITileVisitor> visitors = List.of(new RectangularTileVisitor(validationStrategy), new WinningTileVisitor(validationStrategy));
+        visitors.forEach(visitor -> moveRequest.getTileToMove().accept(visitor));
+
+        String boardHash = DigestUtils.md5DigestAsHex(gson.toJson(moveRequest.getTiles()).getBytes(StandardCharsets.UTF_8));
+
+        /*Controlla se il movimento è valido in base alla strategia di validazione, in questo caso
+          ritorna un oggetto MoveResponse che contiene le tessere senza effettuare alcuna modifica*/
+        if (!validationStrategy.isValid()) {
+            return ResponseEntity.ok(new MoveResponse(false, moveRequest.getTiles()));
+        }
+
+        //Verifica se la griglia è coerente con l'ultimo movimento registrato
+        Optional<Move> lastMove = this.findLastMove(game.getId());
+        if (lastMove.isPresent() && !lastMove.get().getBoardHash().equals(boardHash)) {
+            throw new InvalidBoardConfigurationException();
+        }
+
+        ITile movedTile = moveRequest.getTileToMove().move(moveRequest.getDirection());
+        TreeSet<ITile> responseTiles = new TreeSet<>(moveRequest.getTiles());
+        responseTiles.remove(moveRequest.getTileToMove());
+        responseTiles.add(movedTile);
+
+        /*Valore univoco che rappresenta l'oggetto responseTiles, in modo da poterlo utilizzare
+          per confrontare e verificare l'integrità dei dati successivamente.*/
+        String newBoardHash = DigestUtils.md5DigestAsHex(gson.toJson(responseTiles).getBytes(StandardCharsets.UTF_8));
+        this.createMove(moveRequest, game, board, newBoardHash);
+
+        WinConditionStrategy winConditionStrategy = new WinConditionStrategy(startConfiguration.getWinningX(), startConfiguration.getWinningY());
+        WinningTileVisitor winningTileVisitor = new WinningTileVisitor(winConditionStrategy);
+        movedTile.accept(winningTileVisitor);
+
+        if(winConditionStrategy.isWinning()) {
+            this.setGameFinished(game);
+        }
+
+        return ResponseEntity.ok(new MoveResponse(winConditionStrategy.isWinning(), responseTiles));
     }
 
     @Override

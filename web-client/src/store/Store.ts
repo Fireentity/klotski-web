@@ -123,12 +123,18 @@ const main = {
                 const currentGame = getters['getCurrentGame'];
                 currentGame.board.tiles = response.data.tiles;
                 dispatch('getGameInfoById', currentGame.id);
+                if(response.data.winning) {
+                    router.push('/win')
+                }
             })
         },
-        async getLastUnfinished({commit}) {
+        async getLastUnfinished({commit}, then: (response) => void) {
             return axios.get('/games/unfinished').then((response) => {
-                commit('setBoard', response.data.board)
-                commit('setCurrentGame', response.data)
+                then(response);
+                if(response.data.length !== 0) {
+                    commit('setBoard', response.data.board)
+                    commit('setCurrentGame', response.data)
+                }
             })
         },
         // TODO this method is not used
