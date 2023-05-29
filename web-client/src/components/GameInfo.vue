@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {PlayIcon} from "@heroicons/vue/20/solid";
+import {TrophyIcon} from "@heroicons/vue/24/outline"
 import GameInfo from "@/types/models/GameInfo.ts";
 
 const props = defineProps<{
@@ -15,13 +16,16 @@ const props = defineProps<{
               aria-hidden="true"/>
         <div class="relative flex space-x-3">
             <div>
-                <span class="h-10 w-10 rounded-full flex items-center justify-center ring-8 ring-white bg-sky-200">
+                <span v-if="!game.finished" class="h-10 w-10 rounded-full flex items-center justify-center ring-8 ring-white bg-green-200">
                     <PlayIcon class="h-5 w-5"/>
+                </span>
+                <span v-else class="h-10 w-10 rounded-full flex items-center justify-center ring-8 ring-white bg-orange-200">
+                    <TrophyIcon class="h-5 w-5"/>
                 </span>
             </div>
             <div class="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
                 <div class="flex flex-row">
-                    <p class="text-sm text-gray-500 ml-5 mr-10">
+                    <p class="text-sm text-gray-500 ml-5">
                         Mosse: <strong>{{ props.game.moves }}</strong>
                     </p>
                 </div>

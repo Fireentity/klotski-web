@@ -49,6 +49,9 @@ const router = createRouter({
 });
 
 router.beforeEach((to) => {
+    if(Config.publicPages.includes(to.path)) {
+       return true;
+    }
     store.dispatch('isAuthenticated', (response) => {
         if(response.data === false && !Config.publicPages.includes(to.path)) {
             router.push('/login')

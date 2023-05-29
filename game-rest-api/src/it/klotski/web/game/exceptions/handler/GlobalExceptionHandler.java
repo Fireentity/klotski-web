@@ -18,7 +18,7 @@ public class GlobalExceptionHandler {
      * @return alla pagina lo stato CONFLICT e il messaggio di errore "User already registered".
      */
     @ExceptionHandler(UserAlreadyPresentException.class)
-    public ResponseEntity<?> userAlreadyRegisteredException() {
+    public ResponseEntity<?> handleUserAlreadyRegisteredException() {
         return ResponseEntity.status(HttpStatus.CONFLICT).body("User already registered");
     }
 
@@ -27,7 +27,7 @@ public class GlobalExceptionHandler {
      * @return alla pagina lo stato UNAUTHORIZED e il messaggio di errore "Wrong username or password".
      */
     @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<?> badCredentialsException() {
+    public ResponseEntity<?> handleBadCredentialsException() {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body("Wrong username or password");
     }
 
@@ -36,7 +36,7 @@ public class GlobalExceptionHandler {
      * @return alla pagina lo stato BAD_REQUEST e il messaggio di errore "Unable to find start configuration for that id".
      */
     @ExceptionHandler(ConfigurationNotFoundException.class)
-    public ResponseEntity<?> configurationNotFoundException() {
+    public ResponseEntity<?> handleConfigurationNotFoundException() {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST.value()).body("Unable to find start configuration for that id");
     }
 
@@ -45,17 +45,27 @@ public class GlobalExceptionHandler {
      * @return alla pagina lo stato BAD_REQUEST e il messaggio di errore "Invalid board configuration".
      */
     @ExceptionHandler(InvalidBoardConfigurationException.class)
-    public ResponseEntity<?> invalidBoardConfigurationException() {
+    public ResponseEntity<?> handleInvalidBoardConfigurationException() {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST.value()).body("Invalid board configuration");
     }
 
     @ExceptionHandler(MoveNotFoundException.class)
-    public ResponseEntity<?> moveNotFoundException() {
+    public ResponseEntity<?> handleMoveNotFoundException() {
         return ResponseEntity.status(HttpStatus.CONFLICT).body("There are no moves in this game");
     }
 
     @ExceptionHandler(SolutionNotFoundException.class)
-    public ResponseEntity<?> solutionNotFoundException() {
+    public ResponseEntity<?> handleSolutionNotFoundException() {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Unable to calculate next best move");
+    }
+
+    @ExceptionHandler(GameAlreadyFinishedException.class)
+    public ResponseEntity<?> handleGameAlreadyFinishedException() {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("This game is already finished");
+    }
+
+    @ExceptionHandler(GameAlreadyStartedException.class)
+    public ResponseEntity<?> handleGameAlreadyStartedException() {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("This game is already started");
     }
 }

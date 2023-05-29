@@ -5,6 +5,7 @@ import it.klotski.web.game.domain.game.Game;
 import it.klotski.web.game.domain.game.IGame;
 import it.klotski.web.game.domain.move.Move;
 import it.klotski.web.game.domain.user.User;
+import it.klotski.web.game.exceptions.GameAlreadyFinishedException;
 import it.klotski.web.game.exceptions.GameNotFoundException;
 import it.klotski.web.game.exceptions.InvalidBoardConfigurationException;
 import it.klotski.web.game.exceptions.UserNotFoundException;
@@ -79,6 +80,10 @@ public class MoveController {
         //Il gioco deve appartenere all'user che ha fatto la richiesta
         if (game.getPlayer().getId() != user.getId()) {
             throw new GameNotFoundException();
+        }
+
+        if(game.isFinished()) {
+            throw new GameAlreadyFinishedException();
         }
 
         return puzzleService.moveTile(moveRequest, game);

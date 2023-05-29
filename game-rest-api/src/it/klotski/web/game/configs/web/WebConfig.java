@@ -101,7 +101,8 @@ public class WebConfig implements WebMvcConfigurer {
                 HttpMethod.POST.name(),
                 HttpMethod.PUT.name(),
                 HttpMethod.OPTIONS.name(),
-                HttpMethod.DELETE.name()
+                HttpMethod.DELETE.name(),
+                HttpMethod.PATCH.name()
         ));
         source.registerCorsConfiguration("/**", config);
         FilterRegistrationBean<CorsFilter> bean = new FilterRegistrationBean<>(new CorsFilter(source));

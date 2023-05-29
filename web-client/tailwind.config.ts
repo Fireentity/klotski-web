@@ -27,6 +27,9 @@ module.exports = {
     ],
     theme: {
         extend: {
+            maxWidth: {
+                'xxs': '12rem',
+            },
             fontSize: {
                 '3xl': '80px'
             },

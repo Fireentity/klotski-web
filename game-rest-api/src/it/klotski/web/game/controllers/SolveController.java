@@ -8,6 +8,7 @@ import it.klotski.web.game.domain.tile.strategy.RectangularTileSearchStrategy;
 import it.klotski.web.game.domain.tile.strategy.TileFieldExclusionStrategy;
 import it.klotski.web.game.domain.tile.visitor.ITileVisitor;
 import it.klotski.web.game.domain.tile.visitor.RectangularTileVisitor;
+import it.klotski.web.game.domain.tile.visitor.WinningTileVisitor;
 import it.klotski.web.game.exceptions.SolutionNotFoundException;
 import it.klotski.web.game.payload.reponses.SolveResponse;
 import it.klotski.web.game.payload.requests.SolveRequest;
@@ -46,7 +47,8 @@ public class SolveController {
             throw new SolutionNotFoundException();
         }
         RectangularTileSearchStrategy rectangularTileStrategy = new RectangularTileSearchStrategy(movement.getX(), movement.getY());
-        List<ITileVisitor> visitors = List.of(new RectangularTileVisitor(rectangularTileStrategy));
+        List<ITileVisitor> visitors = List.of(new RectangularTileVisitor(rectangularTileStrategy),
+                new WinningTileVisitor(rectangularTileStrategy));
         for(ITile tile : solveRequest.getTiles()) {
             visitors.forEach(tile::accept);
         }

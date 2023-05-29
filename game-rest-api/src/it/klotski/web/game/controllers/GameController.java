@@ -1,10 +1,12 @@
 package it.klotski.web.game.controllers;
 
 import it.klotski.web.game.configs.Board;
+import it.klotski.web.game.domain.game.Game;
 import it.klotski.web.game.domain.game.GameView;
 import it.klotski.web.game.domain.user.User;
 import it.klotski.web.game.exceptions.GameNotFoundException;
 import it.klotski.web.game.payload.reponses.GameResponse;
+import it.klotski.web.game.payload.requests.ChangeGameConfigurationRequest;
 import it.klotski.web.game.payload.requests.GameRequest;
 import it.klotski.web.game.services.IPuzzleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +48,19 @@ public class GameController {
     public ResponseEntity<GameResponse> createGame(@RequestBody GameRequest gameRequest) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return ResponseEntity.ok(puzzleService.createGameFromConfiguration(authentication.getName(), gameRequest.getStartConfigId()));
+    }
+
+    @PatchMapping(path = "/start-configuration")
+    public ResponseEntity<?> changeStartConfiguration(@RequestBody ChangeGameConfigurationRequest request) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+        Game game = puzzleService.findGameById(request.getGameId()).orElseThrow(GameNotFoundException::new);
+        if (game.getPlayer().getId() != user.getId()) {
+            throw new GameNotFoundException();
+        }
+
+        puzzleService.changeStartConfiguration(game, request.getStartConfigurationId());
+        return ResponseEntity.ok().build();
     }
 
     /**

@@ -83,6 +83,8 @@ public interface IPuzzleService {
      */
     void createMove(MoveRequest moveRequest, Game game, ITile[][] board, String boardHash);
 
+    void changeStartConfiguration(Game game, int startConfigurationId);
+
     /**
      * Funzione che crea una partita da una determinata configurazione.
      * @param email per identificare l'utente.

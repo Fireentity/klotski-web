@@ -15,9 +15,7 @@ import it.klotski.web.game.domain.tile.visitor.ITileVisitor;
 import it.klotski.web.game.domain.tile.visitor.RectangularTileVisitor;
 import it.klotski.web.game.domain.tile.visitor.WinningTileVisitor;
 import it.klotski.web.game.domain.user.User;
-import it.klotski.web.game.exceptions.ConfigurationNotFoundException;
-import it.klotski.web.game.exceptions.InvalidBoardConfigurationException;
-import it.klotski.web.game.exceptions.MoveNotFoundException;
+import it.klotski.web.game.exceptions.*;
 import it.klotski.web.game.payload.reponses.GameResponse;
 import it.klotski.web.game.payload.reponses.MoveResponse;
 import it.klotski.web.game.payload.requests.MoveRequest;
@@ -244,6 +242,22 @@ public class PuzzleService implements IPuzzleService {
         move.setDirection(direction);
 
         moveRepository.save(move);
+    }
+
+    @Override
+    public void changeStartConfiguration(Game game, int startConfigurationId) {
+        GameView gameView = gameViewRepository.findGameViewById(game.getId()).orElseThrow(GameNotFoundException::new);
+        if(gameView.getMoves() != 0) {
+            throw new GameAlreadyStartedException();
+        }
+
+        Board board = boards.get(startConfigurationId);
+        if(board == null) {
+            throw new ConfigurationNotFoundException();
+        }
+
+        game.setStartConfigurationId(startConfigurationId);
+        gameRepository.save(game);
     }
 
     /**

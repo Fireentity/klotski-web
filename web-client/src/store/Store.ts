@@ -10,11 +10,11 @@ import Board from "@/types/models/Board.ts";
 import Game from "@/types/models/Game.ts";
 import UndoRequest from "@/types/requests/UndoRequest.ts";
 import SolveRequest from "@/types/requests/SolveRequest.ts";
+import ChangeGameConfigurationRequest from "@/types/requests/ChangeGameConfigurationRequest.ts";
 
 const main = {
     state: {
         csrf: '',
-        board: Config.fallbackStartConfiguration,
         defaultStartConfiguration: Config.fallbackStartConfiguration.id,
         currentGame: {board: {tiles: []}},
         games: [],
@@ -24,9 +24,6 @@ const main = {
     mutations: {
         setCsrf(state, csrf: string) {
             state.csrf = csrf
-        },
-        setBoard(state, board: Board) {
-            Object.assign(state.board.tiles, board)
         },
         setGames(state, games: GameInfo[]) {
             Object.assign(state.games, games)
@@ -95,8 +92,8 @@ const main = {
                 startConfigId: getters['getDefaultStartConfiguration']
             }).then((response) => {
                 commit('setCurrentGame', response.data)
-                commit('setBoard', getters['getStartConfigurations'][response.data.startConfigurationId])
-                dispatch('getGameInfo', () => {})
+                dispatch('getGameInfo', () => {
+                })
             })
         },
         async getGameInfo({commit}, then: (response) => void) {
@@ -123,7 +120,7 @@ const main = {
                 const currentGame = getters['getCurrentGame'];
                 currentGame.board.tiles = response.data.tiles;
                 dispatch('getGameInfoById', currentGame.id);
-                if(response.data.winning) {
+                if (response.data.winning) {
                     router.push('/win')
                 }
             })
@@ -131,8 +128,7 @@ const main = {
         async getLastUnfinished({commit}, then: (response) => void) {
             return axios.get('/games/unfinished').then((response) => {
                 then(response);
-                if(response.data.length !== 0) {
-                    commit('setBoard', response.data.board)
+                if (response.data.length !== 0) {
                     commit('setCurrentGame', response.data)
                 }
             })
@@ -140,7 +136,6 @@ const main = {
         // TODO this method is not used
         async getGame({commit}, gameId: number) {
             return axios.get(`/games?gameId=${gameId}`).then((response) => {
-                commit('setBoard', response.data.board)
                 commit('setCurrentGame', response.data)
             })
         },
@@ -151,26 +146,38 @@ const main = {
                 dispatch('getGameInfoById', currentGame.id);
             })
         },
-        async undo({getters, dispatch}, undoRequest: UndoRequest) {
-            return axios.post('/moves/undo', undoRequest).then((response) => {
+        async undo({getters, dispatch}, payload: { undoRequest: UndoRequest, catch: (error) => void }) {
+            return axios.post('/moves/undo', payload.undoRequest).then((response) => {
                 const currentGame = getters['getCurrentGame'];
                 currentGame.board.tiles = response.data.tiles;
                 dispatch('getGameInfoById', currentGame.id);
+            }).catch(error => {
+                payload.catch(error);
             })
         },
-        async nextBestMove({getters, dispatch}, solveRequest: SolveRequest) {
-            return axios.post('/solver', solveRequest).then((response) => {
+        async nextBestMove({getters, dispatch}, payload: { solveRequest: SolveRequest, catch: (error) => void }) {
+            return axios.post('/solver', payload.solveRequest).then((response) => {
                 const currentGame = getters['getCurrentGame'];
                 dispatch('move', new MoveRequest(response.data.tile,
                     response.data.direction,
                     currentGame.id,
                     currentGame.board.tiles))
+            }).catch(error => {
+                payload.catch(error)
             })
         },
         async isAuthenticated({getters}, then) {
             return axios.get('/auth/is-authenticated').then((response) => {
                 getters['getUser'].authenticated = response.data
                 then(response)
+            })
+        },
+        async changeGameConfiguration({getters}, payload: {changeRequest: ChangeGameConfigurationRequest, catch: (error) => void}) {
+            return axios.patch('/games/start-configuration', payload.changeRequest).then(() => {
+                Object.assign(getters['getCurrentGame'].board.tiles,
+                    getters['getStartConfigurations'][payload.changeRequest.startConfigurationId].tiles);
+            }).catch(error => {
+                payload.catch(error);
             })
         },
         async csrf({commit}) {
