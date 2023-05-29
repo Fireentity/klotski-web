@@ -1,4 +1,7 @@
 package it.klotski.web.game.exceptions;
 
-public class GameAlreadyStartedException extends RuntimeException{
+/**
+ * Eccezione lanciata quando si tenta di avviare una partita già avviata.
+ */
+public class GameAlreadyStartedException extends RuntimeException {
 }

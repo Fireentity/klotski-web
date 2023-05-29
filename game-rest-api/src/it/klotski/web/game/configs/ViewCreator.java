@@ -6,16 +6,31 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+/**
+ * Classe per la creazione della vista del database.
+ * La classe `ViewCreator` è un componente Spring `ApplicationRunner` che viene eseguito durante l'avvio dell'applicazione.
+ * Si occupa di creare o sostituire la vista del database denominata "games_view".
+ */
 @Component
 public class ViewCreator implements ApplicationRunner {
 
     private final JdbcTemplate jdbcTemplate;
 
+    /**
+     * Costruttore della classe ViewCreator.
+     *
+     * @param jdbcTemplate l'oggetto JdbcTemplate utilizzato per eseguire le query sul database.
+     */
     @Autowired
     public ViewCreator(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    /**
+     * Metodo run che viene eseguito durante l'avvio dell'applicazione.
+     *
+     * @param args gli argomenti dell'applicazione.
+     */
     @Override
     public void run(ApplicationArguments args) {
         jdbcTemplate.execute("CREATE OR REPLACE VIEW \"games_view\" AS " +

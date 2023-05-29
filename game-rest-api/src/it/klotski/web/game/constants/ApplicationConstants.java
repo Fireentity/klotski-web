@@ -8,7 +8,9 @@ import it.klotski.web.game.utils.RuntimeTypeAdapterFactory;
 import java.text.SimpleDateFormat;
 
 /**
- * Questa classe contiene le costanti utilizzate nell'applicazione.
+ * Costanti utilizzate nell'applicazione.
+ * La classe `ApplicationConstants` contiene le costanti utilizzate nell'applicazione, come la dimensione predefinita della pagina per la paginazione,
+ * il formato della data utilizzato, il percorso dei file di configurazione, e la factory di runtime per il tipo di adattatore per le istanze di `ITile`.
  */
 public class ApplicationConstants {
 
@@ -22,15 +24,18 @@ public class ApplicationConstants {
      */
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
 
+    /**
+     * Il percorso del file delle soluzioni.
+     */
     public static final String SOLUTIONS_FILE_PATH = "classpath:config/solutions.json";
 
     /**
-     * Il percorso del file di configurazione delle configurazioni di partenza.
+     * Il percorso del file delle configurazioni di partenza.
      */
     public static final String START_CONFIGURATIONS_FILE_PATH = "classpath:config/startConfigurations.json";
 
     /**
-     * Factory di runtime per il tipo di adattatore per le istanze di ITile.
+     * Factory di runtime per il tipo di adattatore per le istanze di `ITile`.
      */
     public static final RuntimeTypeAdapterFactory<ITile> ADAPTER_FACTORY = RuntimeTypeAdapterFactory.of(ITile.class, "type")
             .registerSubtype(RectangularTile.class, "rectangular")

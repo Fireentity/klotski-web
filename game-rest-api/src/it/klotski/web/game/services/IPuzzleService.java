@@ -18,85 +18,123 @@ import java.util.TreeSet;
 
 /**
  * Interfaccia per la gestione dei servizi legati al gioco (trovare partite, trovare mosse, creare partite, cancellare
- * mosse, calcolare configurazione corrente)
+ * mosse, calcolare configurazione corrente).
  */
 public interface IPuzzleService {
     /**
-     * Funzione per la ricerca di tutte le partite di un dato utente.
-     * @param email per identificare l'utente.
-     * @param pageable per definire il numero di partite per pagina.
-     * @return la lista di partite effettuate dall'utente.
+     * Trova tutte le partite di un determinato utente.
+     *
+     * @param email    l'email per identificare l'utente.
+     * @param pageable l'oggetto Pageable per definire il numero di partite per pagina.
+     * @return la lista delle partite effettuate dall'utente.
      */
     List<GameView> findGamesByUser(String email, Pageable pageable);
 
     /**
-     * Funzione per trovare l'ultima partita non finita di un dato user a partire dalla sua email.
-     * @param email per identificare l'utente.
-     * @return l'ultima partita non finita di un dato user.
+     * Trova l'ultima partita non finita di un determinato utente.
+     *
+     * @param email l'email per identificare l'utente.
+     * @return l'ultima partita non finita dell'utente.
      */
     Optional<GameView> findLastUnfinishedGame(String email);
 
     /**
-     * Funzione per trovare una partita a partire dal suo id.
+     * Trova una partita dato il suo ID.
      *
-     * @param id identificativo di una partita.
-     * @return la partita trovata con quel determinato id.
+     * @param id l'ID della partita.
+     * @return la partita trovata con l'ID specificato.
      */
     Optional<Game> findGameById(long id);
 
+    /**
+     * Trova una partita dato il suo ID.
+     *
+     * @param id l'ID della partita.
+     * @return la partita trovata con l'ID specificato.
+     */
     Optional<GameView> findGameViewById(long id);
 
     /**
-     * Funzione per trovare le mosse di una determinata partita.
-     * @param game partita di cui si vogliono trovare le mosse.
-     * @param pageable per definire il numero di mosse per pagina.
-     * @return la lista di mosse associata alla partita contenuta in game.
+     * Trova le mosse di una determinata partita.
+     *
+     * @param gameId   l'ID della partita.
+     * @param pageable l'oggetto Pageable per definire il numero di mosse per pagina.
+     * @return la lista delle mosse associate alla partita.
      */
     List<Move> findMovesByGame_Id(long gameId, Pageable pageable);
 
     /**
-     * Funzione per cancellare le mosse associate a una partita.
-     * @param game partita di cui bisogna cancellare le mosse.
+     * Cancella tutte le mosse associate a una partita.
+     *
+     * @param gameId l'ID della partita.
      */
     void deleteMovesByGame_Id(long gameId);
 
     /**
-     * Funzione per trovare l'ultima mossa di una partita.
-     * @param game partita di cui si vuole cercare l'ultima mossa.
-     * @return l'ultima mossa della partita contenuta in game.
+     * Trova l'ultima mossa di una partita.
+     *
+     * @param gameId l'ID della partita.
+     * @return l'ultima mossa della partita.
      */
     Optional<Move> findLastMove(long gameId);
 
+    /**
+     * Imposta la partita come finita.
+     *
+     * @param game la partita da segnare come finita.
+     */
     void setGameFinished(Game game);
 
+    /**
+     * Esegue una mossa sulle tessere di una partita.
+     *
+     * @param moveRequest la richiesta di mossa contenente le informazioni sulla tessera e la direzione di movimento.
+     * @param game        la partita in cui viene eseguita la mossa.
+     * @return una ResponseEntity contenente la risposta alla mossa.
+     */
     ResponseEntity<MoveResponse> moveTile(MoveRequest moveRequest, Game game);
 
-    //TODO comment this
+    /**
+     * Annulla l'ultima mossa di una partita.
+     *
+     * @param game  la partita in cui annullare la mossa.
+     * @param tiles l'insieme delle tessere attuali.
+     * @return l'insieme delle tessere dopo l'annullamento della mossa.
+     */
     TreeSet<ITile> undo(IGame game, TreeSet<ITile> tiles);
 
     /**
-     * Funzione per creare una nuova mossa e salvarla nella tabella delle mosse.
-     * @param moveRequest mossa contenente le informazioni sul pezzo e sulla direzione di movimento.
-     * @param game partita in cui avviene la mossa.
-     * @param board griglia in cui avviene la mossa.
-     * @param boardHash stringa che identifica in maniera univoca una disposizione della griglia.
+     * Crea una nuova mossa e la salva nel repository delle mosse.
+     *
+     * @param moveRequest la richiesta di mossa contenente le informazioni sulla tessera e la direzione di movimento.
+     * @param game        la partita in cui viene creata la mossa.
+     * @param board       la griglia in cui avviene la mossa.
+     * @param boardHash   la stringa che identifica in modo univoco una disposizione della griglia.
      */
     void createMove(MoveRequest moveRequest, Game game, ITile[][] board, String boardHash);
 
+    /**
+     * Cambia la configurazione di partenza di una partita.
+     *
+     * @param game                la partita in cui cambiare la configurazione di partenza.
+     * @param startConfigurationId l'ID della nuova configurazione di partenza.
+     */
     void changeStartConfiguration(Game game, int startConfigurationId);
 
     /**
-     * Funzione che crea una partita da una determinata configurazione.
-     * @param email per identificare l'utente.
-     * @param configurationId id della configurazione di start.
-     * @return la partita creata a partire dalla configurazione scelta.
+     * Crea una partita a partire da una configurazione specifica.
+     *
+     * @param email             l'email per identificare l'utente.
+     * @param configurationId   l'ID della configurazione di partenza.
+     * @return la risposta contenente la partita creata.
      */
     GameResponse createGameFromConfiguration(String email, int configurationId);
 
     /**
-     * Funzione che a partire dalle mosse di una partita ricava la configurazione corrente.
-     * @param game partita di cui si vuole ricavare la configurazione corrente.
-     * @return la configurazione corrente della partita contenuta in game.
+     * Calcola la configurazione corrente di una partita in base alle mosse effettuate.
+     *
+     * @param game la partita di cui calcolare la configurazione corrente.
+     * @return la configurazione corrente della partita.
      */
     Board calculateCurrentConfiguration(IGame game);
 }

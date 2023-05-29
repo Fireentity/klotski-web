@@ -11,10 +11,8 @@ import java.util.Optional;
 
 /**
  * Repository per l'accesso ai dati delle mosse.
- *
  * L'interfaccia `IMoveRepository` estende l'interfaccia `PagingAndSortingRepository` e `CrudRepository` di Spring Data
  * per fornire operazioni di accesso ai dati delle mosse.
- *
  * Viene utilizzata l'annotazione `@Repository` per indicare che questa interfaccia è un componente di repository gestito da Spring.
  */
 @Repository
@@ -23,7 +21,7 @@ public interface IMoveRepository extends PagingAndSortingRepository<Move, Long>,
     /**
      * Trova tutte le mosse di una partita, ordinate per data di creazione in ordine ascendente.
      *
-     * @param game     la partita di cui cercare le mosse
+     * @param gameId   l'ID della partita di cui cercare le mosse
      * @param pageable le informazioni di paginazione
      * @return una lista di oggetti `Move` corrispondenti alle mosse trovate
      */
@@ -32,17 +30,22 @@ public interface IMoveRepository extends PagingAndSortingRepository<Move, Long>,
     /**
      * Elimina tutte le mosse di una partita.
      *
-     * @param game la partita di cui eliminare le mosse
+     * @param gameId l'ID della partita di cui eliminare le mosse
      */
     void deleteAllByGame_Id(long gameId);
 
     /**
      * Trova la prima mossa di una partita, ordinata per data di creazione in ordine discendente.
      *
-     * @param game la partita di cui cercare la prima mossa
+     * @param gameId l'ID della partita di cui cercare la prima mossa
      * @return un'istanza di `Optional<Move>` contenente la prima mossa trovata (se presente), altrimenti un'istanza vuota
      */
     Optional<Move> findFirstByGame_IdOrderByCreatedAtDesc(long gameId);
 
+    /**
+     * Elimina una mossa dato il suo ID.
+     *
+     * @param id l'ID della mossa da eliminare
+     */
     void deleteById(long id);
 }

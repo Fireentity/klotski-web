@@ -9,7 +9,7 @@ import static it.klotski.web.game.constants.ApplicationConstants.DATE_FORMAT;
 
 /**
  * Questa classe rappresenta la risposta di un gioco completo.
- * La classe GameResponse contiene le informazioni complete di un gioco, inclusi l'identificatore,
+ * La classe `GameResponse` contiene le informazioni complete di un gioco, inclusi l'identificatore,
  * l'ID della configurazione di partenza, la data di creazione formattata, la durata del gioco,
  * lo stato di completamento e il tabellone di gioco.
  */
@@ -30,12 +30,15 @@ public class GameResponse {
      * La data di creazione del gioco formattata come stringa.
      */
     private final String date;
+
     /**
      * Lo stato di completamento del gioco.
      */
     private final boolean finished;
 
-    //TODO comment this
+    /**
+     * Il numero di mosse effettuate nel gioco.
+     */
     private final int moves;
 
     /**
@@ -44,26 +47,26 @@ public class GameResponse {
     private final Board board;
 
     /**
-     * Crea un'istanza di GameResponse a partire da un oggetto Game e un tabellone di gioco.
+     * Crea un'istanza di `GameResponse` a partire da un oggetto `GameView` e un tabellone di gioco.
      *
-     * @param game  L'oggetto Game da cui ottenere le informazioni.
-     * @param tiles Il tabellone di gioco.
-     * @return Un'istanza di GameResponse contenente le informazioni complete del gioco.
+     * @param game  L'oggetto `GameView` da cui ottenere le informazioni.
+     * @param board Il tabellone di gioco.
+     * @return Un'istanza di `GameResponse` contenente le informazioni complete del gioco.
      */
-    public static GameResponse from(GameView game, Board tiles) {
+    public static GameResponse from(GameView game, Board board) {
         return new GameResponse(game.getId(),
                 game.getStartConfigurationId(),
                 DATE_FORMAT.format(game.getCreatedAt()),
                 game.isFinished(),
                 game.getMoves(),
-                tiles);
+                board);
     }
 
     /**
-     * Verifica se l'oggetto GameResponse è uguale a un altro oggetto.
+     * Verifica se l'oggetto `GameResponse` è uguale a un altro oggetto.
      *
-     * @param o L'oggetto da confrontare con l'istanza corrente di GameResponse.
-     * @return true se gli oggetti sono uguali, false altrimenti.
+     * @param o L'oggetto da confrontare con l'istanza corrente di `GameResponse`.
+     * @return `true` se gli oggetti sono uguali, `false` altrimenti.
      */
     @Override
     public boolean equals(Object o) {
@@ -81,9 +84,9 @@ public class GameResponse {
     }
 
     /**
-     * Restituisce l'hashCode dell'oggetto GameResponse.
+     * Restituisce l'hashCode dell'oggetto `GameResponse`.
      *
-     * @return L'hashCode calcolato per l'istanza corrente di GameResponse.
+     * @return L'hashCode calcolato per l'istanza corrente di `GameResponse`.
      */
     @Override
     public int hashCode() {
@@ -95,5 +98,4 @@ public class GameResponse {
         result = 31 * result + getBoard().hashCode();
         return result;
     }
-
 }

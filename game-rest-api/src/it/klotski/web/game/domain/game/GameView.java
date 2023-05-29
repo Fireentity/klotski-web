@@ -12,13 +12,18 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
 
+/**
+ * Classe che rappresenta una vista del gioco.
+ * La classe GameView implementa l'interfaccia IGame e fornisce informazioni
+ * aggiuntive sul gioco, come il numero di mosse effettuate.
+ */
 @Setter
 @Getter
 @Entity
 @Immutable
 @Subselect("SELECT * FROM games_view")
 @NoArgsConstructor
-public class GameView implements IGame{
+public class GameView implements IGame {
     /**
      * Identificatore univoco del gioco.
      */

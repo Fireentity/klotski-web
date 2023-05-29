@@ -6,16 +6,14 @@ import lombok.RequiredArgsConstructor;
 
 import static it.klotski.web.game.constants.ApplicationConstants.DATE_FORMAT;
 
-@Getter
-@RequiredArgsConstructor
-
 /**
  * Questa classe rappresenta la risposta delle informazioni di un gioco.
- *
- * La classe GameInfoResponse contiene informazioni specifiche su un gioco, come l'identificatore,
+ * La classe `GameInfoResponse` contiene informazioni specifiche su un gioco, come l'identificatore,
  * l'ID della configurazione di partenza, la data di creazione formattata, il numero di mosse effettuate,
  * la durata del gioco e lo stato di completamento.
  */
+@Getter
+@RequiredArgsConstructor
 public class GameInfoResponse {
     /**
      * L'identificatore del gioco.
@@ -43,10 +41,10 @@ public class GameInfoResponse {
     private final boolean finished;
 
     /**
-     * Crea un'istanza di GameInfoResponse a partire da un oggetto Game.
+     * Crea un'istanza di `GameInfoResponse` a partire da un oggetto `GameView`.
      *
-     * @param game L'oggetto Game da cui ottenere le informazioni.
-     * @return Un'istanza di GameInfoResponse contenente le informazioni del gioco.
+     * @param game L'oggetto `GameView` da cui ottenere le informazioni.
+     * @return Un'istanza di `GameInfoResponse` contenente le informazioni del gioco.
      */
     public static GameInfoResponse from(GameView game) {
         return new GameInfoResponse(game.getId(),
@@ -57,10 +55,10 @@ public class GameInfoResponse {
     }
 
     /**
-     * Verifica se l'oggetto GameInfoResponse è uguale a un altro oggetto.
+     * Verifica se l'oggetto `GameInfoResponse` è uguale a un altro oggetto.
      *
-     * @param o L'oggetto da confrontare con l'istanza corrente di GameInfoResponse.
-     * @return true se gli oggetti sono uguali, false altrimenti.
+     * @param o L'oggetto da confrontare con l'istanza corrente di `GameInfoResponse`.
+     * @return `true` se gli oggetti sono uguali, `false` altrimenti.
      */
     @Override
     public boolean equals(Object o) {
@@ -76,11 +74,10 @@ public class GameInfoResponse {
         return getDate().equals(that.getDate());
     }
 
-
     /**
-     * Restituisce l'hashCode dell'oggetto GameInfoResponse.
+     * Restituisce l'hashCode dell'oggetto `GameInfoResponse`.
      *
-     * @return L'hashCode calcolato per l'istanza corrente di GameInfoResponse.
+     * @return L'hashCode calcolato per l'istanza corrente di `GameInfoResponse`.
      */
     @Override
     public int hashCode() {

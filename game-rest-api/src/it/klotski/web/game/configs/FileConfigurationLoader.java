@@ -23,7 +23,7 @@ public class FileConfigurationLoader {
     private final ResourceLoader resourceLoader;
 
     /**
-     * Costruttore della classe FileConfiguration.
+     * Costruttore della classe FileConfigurationLoader.
      *
      * @param resourceLoader Il caricatore di risorse utilizzato per ottenere il percorso del file di configurazione.
      */
@@ -44,6 +44,12 @@ public class FileConfigurationLoader {
         return gson.fromJson(Files.readString(file.toPath()), new TypeToken<List<Board>>(){}.getType());
     }
 
+    /**
+     * Metodo che restituisce una mappa di configurazioni di soluzioni lette da un file.
+     *
+     * @return La mappa di configurazioni di soluzioni.
+     * @throws IOException Se si verifica un errore durante la lettura del file.
+     */
     @Bean
     private HashMap<String, Movement> solutionsConfigurations() throws IOException {
         Gson gson = new Gson();

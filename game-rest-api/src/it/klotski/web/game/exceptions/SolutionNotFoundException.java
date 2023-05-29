@@ -1,4 +1,7 @@
 package it.klotski.web.game.exceptions;
 
-public class SolutionNotFoundException extends RuntimeException{
+/**
+ * Eccezione lanciata quando non viene trovata una soluzione.
+ */
+public class SolutionNotFoundException extends RuntimeException {
 }
