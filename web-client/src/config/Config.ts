@@ -3,6 +3,10 @@ import RectangularTile from '@/types/models/RectangularTile.ts';
 import Tile from '@/types/models/Tile.ts';
 import WinningTile from '@/types/models/WinningTile.ts';
 
+/**
+ * Factory per l'adattamento dei tipi durante la deserializzazione
+ * @type {RuntimeTypeAdapterFactory}
+ */
 const typeAdapterFactory = new RuntimeTypeAdapterFactory('type')
     .addType('rectangular', (data) => {
         return new RectangularTile(data.id, data.x, data.y, data.width, data.height)
@@ -11,6 +15,10 @@ const typeAdapterFactory = new RuntimeTypeAdapterFactory('type')
         return new WinningTile(data.id, data.x, data.y, data.width, data.height)
     });
 
+/**
+ * Configurazione di fallback per l'avvio del gioco
+ * @type {object}
+ */
 const fallbackStartConfiguration = {
     boardWidth: 4,
     boardHeight: 5,
@@ -107,23 +115,50 @@ const fallbackStartConfiguration = {
     ]
 }
 
+/**
+ * Array di oggetti Tile deserializzati
+ * @type {Array<Tile>}
+ */
 const tiles: Tile[] = [];
 fallbackStartConfiguration.tiles.forEach(tile => {
     tiles.push(typeAdapterFactory.parse(tile))
 })
 
-
+/**
+ * Configurazione generale dell'applicazione
+ * @type {object}
+ */
 const config = {
+    /**
+     * Array delle pagine pubbliche
+     * @type {Array<string>}
+     */
+
     publicPages: [
         '/', '/rules', '/home', '/register', '/login', '/win'
     ],
+
+    /**
+     * Configurazione di fallback per l'avvio del gioco
+     * @type {object}
+     */
     fallbackStartConfiguration: {
         boardWidth: fallbackStartConfiguration.boardWidth,
         boardHeight: fallbackStartConfiguration.boardHeight,
         id: fallbackStartConfiguration.id,
         tiles: tiles
     },
+
+    /**
+     * Factory per l'adattamento dei tipi durante la deserializzazione
+     * @type {RuntimeTypeAdapterFactory}
+     */
     typeAdapterFactory: typeAdapterFactory,
+
+    /**
+     * Elementi di navigazione
+     * @type {Array<object>}
+     */
     navElements: [
         {name: 'Home', path: '/home'}, {name: 'Regole', path: '/rules'}, {name: 'Game', path: '/game'}
     ]
