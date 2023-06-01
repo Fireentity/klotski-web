@@ -1,3 +1,4 @@
+<!-- TODO sincronizzare con la partita attuale (se clicco nuova partita o la partita finisce mantiene lo stato di quella vecchia) -->
 <script setup lang="ts">
 import { Listbox, ListboxButton, ListboxLabel, ListboxOption, ListboxOptions } from '@headlessui/vue'
 import {ChevronUpDownIcon, CheckIcon} from "@heroicons/vue/24/outline";
