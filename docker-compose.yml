@@ -15,22 +15,6 @@ services:
       klotski-web:
         ipv4_address: "${NODE_JS_IP_ADDRESS}"
 
-  game-rest-api:
-    image: gradle:${GRADLE_VERSION_TAG}
-    working_dir: /home/gradle/project
-    restart: "always"
-    ports:
-      - '8000:8000'
-    depends_on:
-      - database
-    volumes:
-      - gradle-cache:/home/gradle/.gradle
-      - ${PROJECT_PATH}:/home/gradle/project
-    command: "gradle game-rest-api:bootRun"
-    networks:
-      klotski-web:
-        ipv4_address: "${GAME_REST_API_IP_ADDRESS}"
-
   database:
     image: postgres:${POSTGRES_TAG}
     restart: "no"
