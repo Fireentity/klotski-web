@@ -1,13 +1,19 @@
 package it.klotski.web.game.controller;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import it.klotski.web.game.configs.Board;
+import it.klotski.web.game.controllers.GameController;
 import it.klotski.web.game.domain.game.Game;
+import it.klotski.web.game.domain.game.GameView;
 import it.klotski.web.game.domain.user.User;
+import it.klotski.web.game.exceptions.handler.GlobalExceptionHandler;
 import it.klotski.web.game.payload.reponses.GameResponse;
+import it.klotski.web.game.payload.requests.GameRequest;
 import it.klotski.web.game.repositories.IGameRepository;
+import it.klotski.web.game.repositories.IGameViewRepository;
 import it.klotski.web.game.repositories.IUserRepository;
 import it.klotski.web.game.services.PuzzleService;
+import it.klotski.web.game.services.UserService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,8 +22,8 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -26,6 +32,8 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,19 +48,35 @@ public class GameControllerTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
     @Autowired
+    private List<Board> boards;
+    @Autowired
     private PuzzleService puzzleService;
+    @MockBean
+    private UserService userService;
     @MockBean
     private IUserRepository userRepository;
     @MockBean
     private IGameRepository gameRepository;
+    @MockBean
+    private IGameViewRepository gameViewRepository;
+    @Autowired
+    private GameController gameController;
+    @Autowired
+    private Gson gson;
+    @Autowired
+    private GlobalExceptionHandler globalExceptionHandler;
+
+    private static final User USER = User.builder().id(1).email("example@gmail.com").password("password").build();
+    private static final Game GAME = Game.builder().id(1).player(USER).startConfigurationId(0).createdAt(Timestamp.from(Instant.now())).build();
+
 
     @BeforeEach
     public void setup() {
-        User user = new User();
-        user.setId(1);
-        user.setEmail("example@gmail.com");
-        user.setPassword("password");
-        Mockito.when(userRepository.findByEmail("example@gmail.com")).thenReturn(Optional.of(user));
+
+        Mockito.when(userRepository.findByEmail("example@gmail.com")).thenReturn(Optional.of(USER));
+        Mockito.when(userService.loadUserByUsername("example@gmail.com")).thenReturn(USER);
+        Mockito.when(gameRepository.save(GAME)).thenReturn(GAME);
+        Mockito.when(gameViewRepository.findGameViewById(1L)).thenReturn(Optional.of(GameView.from(GAME,0)));
         //Init MockMvc Object and build
         mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
                 .apply(SecurityMockMvcConfigurers.springSecurity())
@@ -67,67 +91,39 @@ public class GameControllerTest {
 
     @Test
     @WithMockUser(username = "example@gmail.com")
-    public void whenConfigurationIsRandom_thenOkIsReceived() throws Exception {
-        MvcResult result = mvc.perform(post("/api/games").with(csrf())).andReturn();
-        Assertions.assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
-    }
-
-    @Test
-    @WithMockUser(username = "example@gmail.com")
-    public void givenRandomConfiguration_whenCreatingNewGame_thenOkIsReceived() throws Exception {
-        MvcResult result = mvc.perform(post("/api/games").with(csrf()).requestAttr("startConfigId", 0)).andReturn();
+    public void givenExistentConfiguration_whenCreatingNewGame_thenOkIsReceived() throws Exception {
+        MvcResult result = mvc.perform(post("/api/games")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new Gson().toJson(new GameRequest(0)))
+                .with(csrf())).andReturn();
         Assertions.assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
     }
 
     @Test
     @WithMockUser(username = "example@gmail.com")
     public void givenNonexistentConfigurationId_whenCreatingNewGame_thenBadRequestReceived() throws Exception {
-        MvcResult result = mvc.perform(post("/api/games").with(csrf()).param("startConfigId", "1")).andReturn();
+        MvcResult result = mvc.perform(post("/api/games")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new Gson().toJson(new GameRequest(5)))
+                .with(csrf())).andReturn();
         Assertions.assertEquals(HttpStatus.BAD_REQUEST.value(), result.getResponse().getStatus());
     }
 
     @Test
     @WithMockUser(username = "example@gmail.com")
-    public void givenNoGameInstances_whenGettingGamesFromUser_thenOkWithEmptyListIsReturned() throws Exception {
-        Mockito.when(puzzleService.findGamesByUser("example@gmail.com", PageRequest.of(0, 10))).thenReturn(List.of());
-        MvcResult result = mvc.perform(get("/api/games")).andReturn();
-        Assertions.assertEquals(List.of(), new Gson().fromJson(
-                result.getResponse().getContentAsString(),
-                new TypeToken<List<Game>>() {}.getType())
-        );
+    public void givenGameId_whenGameNotExists_thenGameViewIsReturned() throws Exception {
+        MvcResult result = mvc.perform(get("/api/games?gameId=" + 2L)).andReturn();
+        Assertions.assertEquals(HttpStatus.BAD_REQUEST.value(), result.getResponse().getStatus());
     }
 
     @Test
     @WithMockUser(username = "example@gmail.com")
-    public void givenGameInstances_whenGettingGamesFromUser_thenOkWithFilledListIsReturned() throws Exception {
-        List<Game> games = List.of(Game.builder()
-                        .player(null).date(1000).id(1).isFinished(true).duration(10000).startConfigurationId(0)
-                        .build(),
-                Game.builder()
-                        .player(null).date(2000).id(2).isFinished(false).duration(20000).startConfigurationId(0)
-                        .build(),
-                Game.builder()
-                        .player(null).date(3000).id(3).isFinished(true).duration(30000).startConfigurationId(0)
-                        .build(),
-                Game.builder()
-                        .player(null).date(4000).id(4).isFinished(false).duration(40000).startConfigurationId(0)
-                        .build(),
-                Game.builder()
-                        .player(null).date(5000).id(5).isFinished(true).duration(50000).startConfigurationId(0)
-                        .build(),
-                Game.builder()
-                        .player(null).date(6000).id(6).isFinished(false).duration(60000).startConfigurationId(0)
-                        .build());
-        List<GameResponse> response = games.stream().map(GameResponse::from).toList();
-
-        Mockito.when(gameRepository.findAllByPlayer_Email("example@gmail.com", PageRequest.of(0, 10)))
-                .thenReturn(games);
-
-
-        MvcResult result = mvc.perform(get("/api/games")).andReturn();
-        Assertions.assertEquals(response, new Gson().fromJson(
+    public void givenGameId_whenGameExists_thenGameViewIsReturned() throws Exception {
+        MvcResult result = mvc.perform(get("/api/games?gameId=" + 1L)).andReturn();
+        GameResponse gameViewTest = GameResponse.from(GameView.from(GAME,0),boards.get(0));
+        GameResponse gameViewResult = gson.fromJson(
                 result.getResponse().getContentAsString(),
-                new TypeToken<List<GameResponse>>() {}.getType())
-        );
+                GameResponse.class);
+        Assertions.assertEquals(gameViewTest, gameViewResult);
     }
 }

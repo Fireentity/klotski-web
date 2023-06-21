@@ -92,4 +92,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleGameAlreadyStartedException() {
         return ResponseEntity.status(HttpStatus.CONFLICT).body("This game is already started");
     }
+
+    @ExceptionHandler(GameNotFoundException.class)
+    public ResponseEntity<?> handleGameNotFoundException() {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Game not found");
+    }
 }

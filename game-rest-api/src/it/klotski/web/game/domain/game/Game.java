@@ -2,9 +2,7 @@ package it.klotski.web.game.domain.game;
 
 import it.klotski.web.game.domain.user.User;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -21,6 +19,10 @@ import java.sql.Timestamp;
 @Getter
 @Table(name = "games")
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@With
+@EqualsAndHashCode
 public class Game implements IGame {
     /**
      * Identificatore univoco del gioco.
@@ -39,11 +41,6 @@ public class Game implements IGame {
      * L'ID della configurazione di partenza del gioco.
      */
     private int startConfigurationId;
-
-    /**
-     * La durata del gioco in millisecondi.
-     */
-    private long duration;
 
     /**
      * Data e ora di creazione del gioco.

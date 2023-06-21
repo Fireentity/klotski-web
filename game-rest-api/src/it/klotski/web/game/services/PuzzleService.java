@@ -302,8 +302,8 @@ public class PuzzleService implements IPuzzleService {
         game.setStartConfigurationId(configurationId);
 
         Board board = boards.get(configurationId);
-        long id = gameRepository.save(game).getId();
-        GameView gameView = gameViewRepository.findGameViewById(id).orElseThrow();
+        game = gameRepository.save(game);
+        GameView gameView = gameViewRepository.findGameViewById(game.getId()).orElseThrow();
         return GameResponse.from(gameView, board);
     }
 

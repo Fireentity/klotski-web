@@ -1,6 +1,7 @@
 package it.klotski.web.game.configs;
 
 import it.klotski.web.game.domain.tile.ITile;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.With;
@@ -13,6 +14,7 @@ import java.util.TreeSet;
 @With
 @Getter
 @RequiredArgsConstructor
+@EqualsAndHashCode
 public class Board {
     /**
      * La coordinata x in alto a sinistra del pezzo "winning tile" che determina la vittoria della partita.

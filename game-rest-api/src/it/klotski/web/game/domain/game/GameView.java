@@ -2,6 +2,7 @@ package it.klotski.web.game.domain.game;
 
 import it.klotski.web.game.domain.user.User;
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,6 +24,7 @@ import java.sql.Timestamp;
 @Immutable
 @Subselect("SELECT * FROM games_view")
 @NoArgsConstructor
+@EqualsAndHashCode
 public class GameView implements IGame {
     /**
      * Identificatore univoco del gioco.
@@ -63,4 +65,16 @@ public class GameView implements IGame {
      * Il numero di mosse effettuate nel gioco.
      */
     private int moves;
+
+    public static GameView from(Game game, int moves) {
+        GameView gameView = new GameView();
+        gameView.setId(game.getId());
+        gameView.setFinished(game.isFinished());
+        gameView.setPlayer(game.getPlayer());
+        gameView.setCreatedAt(game.getCreatedAt());
+        gameView.setUpdatedAt(game.getUpdatedAt());
+        gameView.setStartConfigurationId(game.getStartConfigurationId());
+        gameView.setMoves(moves);
+        return gameView;
+    }
 }

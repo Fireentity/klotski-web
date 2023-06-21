@@ -2,6 +2,7 @@ package it.klotski.web.game.payload.reponses;
 
 import it.klotski.web.game.configs.Board;
 import it.klotski.web.game.domain.game.GameView;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -15,6 +16,7 @@ import static it.klotski.web.game.constants.ApplicationConstants.DATE_FORMAT;
  */
 @Getter
 @RequiredArgsConstructor
+@EqualsAndHashCode
 public class GameResponse {
     /**
      * L'identificatore del gioco.
@@ -60,42 +62,5 @@ public class GameResponse {
                 game.isFinished(),
                 game.getMoves(),
                 board);
-    }
-
-    /**
-     * Verifica se l'oggetto `GameResponse` è uguale a un altro oggetto.
-     *
-     * @param o L'oggetto da confrontare con l'istanza corrente di `GameResponse`.
-     * @return `true` se gli oggetti sono uguali, `false` altrimenti.
-     */
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        GameResponse that = (GameResponse) o;
-
-        if (getId() != that.getId()) return false;
-        if (getStartConfigurationId() != that.getStartConfigurationId()) return false;
-        if (isFinished() != that.isFinished()) return false;
-        if (getMoves() != that.getMoves()) return false;
-        if (!getDate().equals(that.getDate())) return false;
-        return getBoard().equals(that.getBoard());
-    }
-
-    /**
-     * Restituisce l'hashCode dell'oggetto `GameResponse`.
-     *
-     * @return L'hashCode calcolato per l'istanza corrente di `GameResponse`.
-     */
-    @Override
-    public int hashCode() {
-        int result = (int) (getId() ^ (getId() >>> 32));
-        result = 31 * result + getStartConfigurationId();
-        result = 31 * result + getDate().hashCode();
-        result = 31 * result + (isFinished() ? 1 : 0);
-        result = 31 * result + getMoves();
-        result = 31 * result + getBoard().hashCode();
-        return result;
     }
 }

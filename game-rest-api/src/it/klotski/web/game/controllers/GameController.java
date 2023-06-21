@@ -8,6 +8,7 @@ import it.klotski.web.game.exceptions.GameNotFoundException;
 import it.klotski.web.game.payload.reponses.GameResponse;
 import it.klotski.web.game.payload.requests.ChangeGameConfigurationRequest;
 import it.klotski.web.game.payload.requests.GameRequest;
+import it.klotski.web.game.repositories.IUserRepository;
 import it.klotski.web.game.services.IPuzzleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,15 +28,18 @@ import java.util.Optional;
 @RequestMapping(path = "/api/games")
 public class GameController {
     private final IPuzzleService puzzleService;
+    private final IUserRepository userRepository;
 
     /**
      * Costruisce un'istanza di GameController con il servizio di puzzle specificato.
      *
-     * @param puzzleService il servizio di puzzle utilizzato per gestire le operazioni di gioco
+     * @param puzzleService  il servizio di puzzle utilizzato per gestire le operazioni di gioco
+     * @param userRepository
      */
     @Autowired
-    public GameController(IPuzzleService puzzleService) {
+    public GameController(IPuzzleService puzzleService, IUserRepository userRepository) {
         this.puzzleService = puzzleService;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -53,7 +57,8 @@ public class GameController {
     @PatchMapping(path = "/start-configuration")
     public ResponseEntity<?> changeStartConfiguration(@RequestBody ChangeGameConfigurationRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = (User) authentication.getPrincipal();
+        String email = authentication.getName();
+        User user = userRepository.findByEmail(email).orElseThrow();
         Game game = puzzleService.findGameById(request.getGameId()).orElseThrow(GameNotFoundException::new);
         if (game.getPlayer().getId() != user.getId()) {
             throw new GameNotFoundException();
@@ -73,7 +78,8 @@ public class GameController {
     @GetMapping
     public ResponseEntity<GameResponse> getGame(@RequestParam long gameId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = (User) authentication.getPrincipal();
+        String email = authentication.getName();
+        User user = userRepository.findByEmail(email).orElseThrow();
         GameView game = puzzleService.findGameViewById(gameId).orElseThrow(GameNotFoundException::new);
         if (game.getPlayer().getId() != user.getId()) {
             throw new GameNotFoundException();
