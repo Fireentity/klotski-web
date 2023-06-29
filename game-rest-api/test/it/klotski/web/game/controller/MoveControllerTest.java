@@ -53,6 +53,26 @@ public class MoveControllerTest {
     @Autowired
     private List<Board> boardConfiguration;
 
+    private static final int EXISTSENT_GAME_ID = 1;
+    private static final int EXISTENT_USER_ID = 1;
+    private static final int EXISTENT_CONFIGURATION_ID = 0;
+    private static final User USER = User.builder()
+            .id(EXISTENT_USER_ID)
+            .email("example@gmail.com")
+            .password("password")
+            .build();
+    private static final Game NEWLY_CREATED_GAME = Game.builder()
+            .player(USER)
+            .startConfigurationId(EXISTENT_CONFIGURATION_ID)
+            .build();
+    private static final Game GAME = Game.builder()
+            .id(EXISTSENT_GAME_ID)
+            .player(USER)
+            .startConfigurationId(EXISTENT_CONFIGURATION_ID)
+            .createdAt(Timestamp.from(Instant.now()))
+            .finished(false)
+            .build();
+
     @BeforeEach
     public void setup() {
         User user = new User();
@@ -64,21 +84,12 @@ public class MoveControllerTest {
         mvc = MockMvcBuilders.standaloneSetup(moveController)
                 .setMessageConverters(new GsonHttpMessageConverter(gson))
                 .build();
+        Mockito.when(gameRepository.findGameById(1)).thenReturn(Optional.of(GAME));
     }
 
     @Test
     @WithMockUser(username = "example@gmail.com")
     public void givenUnfinishedGame_whenIsPossibleToMoveTile_thenOkIsReturned() throws Exception {
-        User user = new User();
-        user.setId(1);
-        user.setEmail("example@gmail.com");
-        user.setPassword("password");
-        Mockito.when(gameRepository.findGameById(1)).thenReturn(Optional.of(new Game(1,
-                user,
-                0,
-                Timestamp.from(Instant.now()),
-                Timestamp.from(Instant.now()),
-                false)));
 
         Board startConfig = boardConfiguration.get(0);
         TreeSet<ITile> tileConfigs = startConfig.getTiles();

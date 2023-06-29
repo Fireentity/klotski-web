@@ -66,17 +66,32 @@ public class GameControllerTest {
     @Autowired
     private GlobalExceptionHandler globalExceptionHandler;
 
-    private static final User USER = User.builder().id(1).email("example@gmail.com").password("password").build();
-    private static final Game GAME = Game.builder().id(1).player(USER).startConfigurationId(0).createdAt(Timestamp.from(Instant.now())).build();
+    private static final int EXISTSENT_GAME_ID = 1;
+    private static final int EXISTENT_USER_ID = 1;
+    private static final int EXISTENT_CONFIGURATION_ID = 0;
+    private static final User USER = User.builder()
+            .id(EXISTENT_USER_ID)
+            .email("example@gmail.com")
+            .password("password")
+            .build();
+    private static final Game NEWLY_CREATED_GAME = Game.builder()
+            .player(USER)
+            .startConfigurationId(EXISTENT_CONFIGURATION_ID)
+            .build();
+    private static final Game GAME = Game.builder()
+            .id(EXISTSENT_GAME_ID)
+            .player(USER)
+            .startConfigurationId(EXISTENT_CONFIGURATION_ID)
+            .createdAt(Timestamp.from(Instant.now()))
+            .build();
 
 
     @BeforeEach
     public void setup() {
-
         Mockito.when(userRepository.findByEmail("example@gmail.com")).thenReturn(Optional.of(USER));
         Mockito.when(userService.loadUserByUsername("example@gmail.com")).thenReturn(USER);
-        Mockito.when(gameRepository.save(GAME)).thenReturn(GAME);
-        Mockito.when(gameViewRepository.findGameViewById(1L)).thenReturn(Optional.of(GameView.from(GAME,0)));
+        Mockito.when(gameRepository.save(NEWLY_CREATED_GAME)).thenReturn(GAME);
+        Mockito.when(gameViewRepository.findGameViewById(EXISTSENT_GAME_ID)).thenReturn(Optional.of(GameView.from(GAME,0)));
         //Init MockMvc Object and build
         mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
                 .apply(SecurityMockMvcConfigurers.springSecurity())
@@ -84,7 +99,7 @@ public class GameControllerTest {
     }
 
     @Test
-    public void whenUserIsNotLoggedIn_thenForbiddenRequestIsReceived() throws Exception {
+    public void givenNonLoggedUser_whenCreatingNewGame_thenForbiddenRequestIsReceived() throws Exception {
         MvcResult result = mvc.perform(post("/api/games")).andReturn();
         Assertions.assertEquals(HttpStatus.FORBIDDEN.value(), result.getResponse().getStatus());
     }
@@ -94,7 +109,7 @@ public class GameControllerTest {
     public void givenExistentConfiguration_whenCreatingNewGame_thenOkIsReceived() throws Exception {
         MvcResult result = mvc.perform(post("/api/games")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(new Gson().toJson(new GameRequest(0)))
+                .content(new Gson().toJson(new GameRequest(EXISTENT_CONFIGURATION_ID)))
                 .with(csrf())).andReturn();
         Assertions.assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
     }
@@ -111,14 +126,14 @@ public class GameControllerTest {
 
     @Test
     @WithMockUser(username = "example@gmail.com")
-    public void givenGameId_whenGameNotExists_thenGameViewIsReturned() throws Exception {
+    public void givenNonExistentGameId_whenGettingTheGame_thenBadRequestIsReceived() throws Exception {
         MvcResult result = mvc.perform(get("/api/games?gameId=" + 2L)).andReturn();
         Assertions.assertEquals(HttpStatus.BAD_REQUEST.value(), result.getResponse().getStatus());
     }
 
     @Test
     @WithMockUser(username = "example@gmail.com")
-    public void givenGameId_whenGameExists_thenGameViewIsReturned() throws Exception {
+    public void givenExistentGameId_whenGettingTheGame_thenGameViewIsReceived() throws Exception {
         MvcResult result = mvc.perform(get("/api/games?gameId=" + 1L)).andReturn();
         GameResponse gameViewTest = GameResponse.from(GameView.from(GAME,0),boards.get(0));
         GameResponse gameViewResult = gson.fromJson(
