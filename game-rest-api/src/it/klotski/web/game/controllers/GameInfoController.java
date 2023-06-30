@@ -48,7 +48,11 @@ public class GameInfoController {
                 .collect(Collectors.toList()));
     }
 
-    //TODO comment this
+    /**
+     *
+     * @param gameId l'id della partita di cui si vogliono ottenere le informazioni
+     * @return una ResponseEntity contenente le informazioni riguardanti la partita
+     */
     @GetMapping("/{gameId}")
     public ResponseEntity<GameInfoResponse> getGames(@PathVariable(name = "gameId") long gameId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

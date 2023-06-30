@@ -1,9 +1,6 @@
-<!-- TODO sistemare il footer e l'immagine che ci va sopra, ridimensionarla in modo appropriato -->
 <script setup>
 import { ArrowPathIcon, ArrowUturnLeftIcon, LightBulbIcon } from '@heroicons/vue/20/solid'
 import ruleImg from "~/rulesImg.png"
-
-const ruleImgUrl = ruleImg;
 </script>
 
 

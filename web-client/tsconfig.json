@@ -35,7 +35,6 @@
         "./resources/*"
       ]
     },
-    //TODO fix this output directory
     "outDir": "./out"
   },
   "typeRoots": [

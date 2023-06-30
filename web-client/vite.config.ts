@@ -27,9 +27,7 @@ export default ({mode}) => {
         resolve: {
             alias: {
                 '@': '/src',
-                '~': '/resources',
-                find: "@vue/runtime-core",
-                replacement: "@vue/runtime-core/dist/runtime-core.esm-bundler.js",
+                '~': '/resources'
             }
         }
     })

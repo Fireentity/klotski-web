@@ -262,18 +262,6 @@ const main = {
                 }
             })
         },
-        // TODO this method is not used
-        /**
-         * Azione per ottenere un gioco tramite ID
-         * @param {object} context - Il contesto dell'azione Vuex
-         * @param {number} gameId - L'ID del gioco
-         * @returns {Promise}
-         */
-        async getGame({commit}, gameId: number) {
-            return axios.get(`/games?gameId=${gameId}`).then((response) => {
-                commit('setCurrentGame', response.data)
-            })
-        },
 
         /**
          * Azione per reimpostare un gioco

@@ -24,6 +24,16 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * Gestisce l'eccezione UserAlreadyPresentException.
+     *
+     * @return Una ResponseEntity con lo stato CONFLICT e il messaggio di errore "User already registered".
+     */
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<?> handleUserNotFoundException() {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("User not found");
+    }
+
+    /**
      * Gestisce l'eccezione BadCredentialsException.
      *
      * @return Una ResponseEntity con lo stato UNAUTHORIZED e il messaggio di errore "Wrong username or password".
@@ -93,6 +103,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body("This game is already started");
     }
 
+    /**
+     * Gestisce l'eccezione GameNotFoundException.
+     *
+     * @return Una ResponseEntity con lo stato BAD_REQUEST e il messaggio di errore "Game not found".
+     */
     @ExceptionHandler(GameNotFoundException.class)
     public ResponseEntity<?> handleGameNotFoundException() {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Game not found");
