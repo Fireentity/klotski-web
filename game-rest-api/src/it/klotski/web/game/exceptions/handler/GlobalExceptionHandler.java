@@ -112,4 +112,14 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleGameNotFoundException() {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Game not found");
     }
+
+    /**
+     * Gestisce l'eccezione TileNotFoundException.
+     *
+     * @return Una ResponseEntity con lo stato BAD_REQUEST e il messaggio di errore "Game not found".
+     */
+    @ExceptionHandler(TileNotFoundException.class)
+    public ResponseEntity<?> handleTileNotFoundException() {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Tile not found");
+    }
 }

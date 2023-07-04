@@ -10,6 +10,7 @@ import it.klotski.web.game.domain.tile.visitor.ITileVisitor;
 import it.klotski.web.game.domain.tile.visitor.RectangularTileVisitor;
 import it.klotski.web.game.domain.tile.visitor.WinningTileVisitor;
 import it.klotski.web.game.exceptions.SolutionNotFoundException;
+import it.klotski.web.game.exceptions.TileNotFoundException;
 import it.klotski.web.game.payload.reponses.SolveResponse;
 import it.klotski.web.game.payload.requests.SolveRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,9 +80,7 @@ public class SolveController {
         for (ITile tile : solveRequest.getTiles()) {
             visitors.forEach(tile::accept);
         }
-        ITile tile = rectangularTileStrategy.getTile().orElseThrow(() -> new IllegalStateException(String.format("Unable to find tile with x:%d y:%d",
-                movement.getX(),
-                movement.getY())));
+        ITile tile = rectangularTileStrategy.getTile().orElseThrow(TileNotFoundException::new);
         return ResponseEntity.ok(SolveResponse.from(tile, movement));
     }
 }
