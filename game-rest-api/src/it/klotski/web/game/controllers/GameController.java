@@ -5,6 +5,7 @@ import it.klotski.web.game.domain.game.Game;
 import it.klotski.web.game.domain.game.GameView;
 import it.klotski.web.game.domain.user.User;
 import it.klotski.web.game.exceptions.GameNotFoundException;
+import it.klotski.web.game.exceptions.UserNotFoundException;
 import it.klotski.web.game.payload.reponses.GameResponse;
 import it.klotski.web.game.payload.requests.ChangeGameConfigurationRequest;
 import it.klotski.web.game.payload.requests.GameRequest;
@@ -58,7 +59,7 @@ public class GameController {
     public ResponseEntity<?> changeStartConfiguration(@RequestBody ChangeGameConfigurationRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
-        User user = userRepository.findByEmail(email).orElseThrow();
+        User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
         Game game = puzzleService.findGameById(request.getGameId()).orElseThrow(GameNotFoundException::new);
         if (game.getPlayer().getId() != user.getId()) {
             throw new GameNotFoundException();
