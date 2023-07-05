@@ -85,7 +85,6 @@ public class GameControllerTest {
             .createdAt(Timestamp.from(Instant.now()))
             .build();
 
-
     @BeforeEach
     public void setup() {
         Mockito.when(userRepository.findByEmail("example@gmail.com")).thenReturn(Optional.of(USER));

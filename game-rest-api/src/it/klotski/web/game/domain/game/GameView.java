@@ -2,10 +2,7 @@ package it.klotski.web.game.domain.game;
 
 import it.klotski.web.game.domain.user.User;
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Immutable;
 import org.hibernate.annotations.Subselect;
@@ -23,6 +20,8 @@ import java.sql.Timestamp;
 @Entity
 @Immutable
 @Subselect("SELECT * FROM games_view")
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
 public class GameView implements IGame {

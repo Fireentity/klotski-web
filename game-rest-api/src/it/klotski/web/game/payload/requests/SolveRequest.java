@@ -1,6 +1,7 @@
 package it.klotski.web.game.payload.requests;
 
 import it.klotski.web.game.domain.tile.ITile;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -13,6 +14,7 @@ import java.util.TreeSet;
  */
 @Getter
 @RequiredArgsConstructor
+@EqualsAndHashCode
 public class SolveRequest {
     /**
      * L'insieme delle tessere attuali del gioco.
