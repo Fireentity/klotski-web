@@ -5,6 +5,7 @@ import it.klotski.web.game.configs.Board;
 import it.klotski.web.game.controllers.SolveController;
 import it.klotski.web.game.domain.move.Direction;
 import it.klotski.web.game.domain.tile.ITile;
+import it.klotski.web.game.domain.tile.RectangularTile;
 import it.klotski.web.game.domain.tile.strategy.RectangularTileSearchStrategy;
 import it.klotski.web.game.domain.tile.visitor.ITileVisitor;
 import it.klotski.web.game.domain.tile.visitor.RectangularTileVisitor;
@@ -73,5 +74,22 @@ public class SolveControllerTest {
         Assertions.assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
         Assertions.assertEquals(solveResponse.getDirection(), Direction.DOWN);
         Assertions.assertEquals(solveResponse.getTile(), tile);
+    }
+
+    @Test
+    @WithMockUser(username = "example@gmail.com")
+    public void givenUnsolvableConfiguration_whenCalculatingNextBestMove_thanSolveResponseIsReturned() throws Exception {
+        TreeSet<ITile> tiles = boards.get(GAME_CONFIGURATION_ID).getTiles();
+        tiles.add(new RectangularTile(0,0,0,4,4));
+        RectangularTileSearchStrategy searchStrategy = new RectangularTileSearchStrategy(0,0);
+        List<ITileVisitor> tileVisitors = List.of(new RectangularTileVisitor(searchStrategy), new WinningTileVisitor(searchStrategy));
+        for(ITile tile : tiles) {
+            tileVisitors.forEach(tile::accept);
+        }
+        MvcResult result = mvc.perform(post("/api/solver")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(gson.toJson(new SolveRequest(new TreeSet<>())))
+                .with(csrf())).andReturn();
+        Assertions.assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());
     }
 }

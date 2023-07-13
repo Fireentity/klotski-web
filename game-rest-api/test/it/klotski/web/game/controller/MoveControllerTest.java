@@ -114,4 +114,33 @@ public class MoveControllerTest {
         Assertions.assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
 
     }
+
+
+    @Test
+    @WithMockUser(username = "example@gmail.com")
+    public void givenUnfinishedGame_whenIsImpossibleToMoveTile_thenOkIsReturned() throws Exception {
+
+        Board startConfig = boardConfiguration.get(0);
+        TreeSet<ITile> tileConfigs = startConfig.getTiles();
+        ITile[][] tiles = new ITile[startConfig.getBoardHeight()][startConfig.getBoardWidth()];
+        ITileVisitor tileVisitor = new RectangularTileVisitor(new RectangularTileMatrixInsertionStrategy(tiles,
+                startConfig.getBoardHeight(),
+                startConfig.getBoardWidth()));
+        for (ITile tile : tileConfigs) {
+            tile.accept(tileVisitor);
+        }
+
+        ITile tileToMove = startConfig.getTiles().stream().filter(tile -> tile.getId() == 10).findFirst().orElseThrow();
+
+        MoveRequest moveRequest = new MoveRequest(tileToMove,
+                Direction.LEFT,
+                1,
+                startConfig.getTiles());
+        String jsonContent = gson.toJson(moveRequest);
+        MvcResult result = mvc.perform(post("/api/moves").content(jsonContent)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)).andReturn();
+        Assertions.assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
+
+    }
 }

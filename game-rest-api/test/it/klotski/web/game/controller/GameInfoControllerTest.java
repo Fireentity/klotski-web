@@ -90,4 +90,11 @@ public class GameInfoControllerTest {
         Assertions.assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
         Assertions.assertEquals(gameInfoResponse, GAME_INFO_RESPONSE);
     }
+
+    @Test
+    @WithMockUser(username = "example@gmail.com")
+    public void givenNonExistentGameId_whenGettingGameInfo_thanGameInfoIsReturned() throws Exception {
+        MvcResult result = mvc.perform(get("/api/game/info/" + 10).with(csrf())).andReturn();
+        Assertions.assertEquals(HttpStatus.BAD_REQUEST.value(), result.getResponse().getStatus());
+    }
 }
