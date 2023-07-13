@@ -1,3 +1,3 @@
 # klotski-web
 
-Progetto di Lorenzo Croce, Alberto Bottari, Pavanetto Marco
+Progetto di Croce Lorenzo, Bottari Alberto, Pavanetto Marco
